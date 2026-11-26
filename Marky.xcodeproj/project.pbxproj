@@ -17,6 +17,7 @@
 		36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B38D6D99DA1A1117998E4A /* Shortcuts.swift */; };
 		39BB5F5F947D85D603EE4C1E /* FolderTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44192DD694582DF15775C5A /* FolderTree.swift */; };
 		40ED370CB67DCDBA0AADE024 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */; };
+		4BB61CE7F874F40FE5CD6332 /* THIRD-PARTY-LICENSES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */; };
 		4E2F7B67A9F513D88FCAC662 /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 707C4AF31B095D33CC2CAB37 /* bridge.js */; };
 		5E47C388A70C43CC625A380B /* MarkyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591CD62A0E06A43CC48EA9F /* MarkyApp.swift */; };
 		751F6D967A06F02A131ABF5F /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4325992E10503892A87DDFD /* DocumentModel.swift */; };
@@ -27,6 +28,7 @@
 		88F99B39522F451EF0BE3909 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */; };
 		8B548FA73DC22359313FC8F4 /* MarkyQuickLook.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */; };
+		98E39866F2E12449CB0B2887 /* THIRD-PARTY-LICENSES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */; };
 		A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */; };
 		AD7FE3D1D40DF94C7A344AAB /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B2882E017071BF08802FC95A /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
@@ -76,6 +78,7 @@
 		7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it-footnote.min.js"; sourceTree = "<group>"; };
 		72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MarkyQuickLook.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		82B38D6D99DA1A1117998E4A /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
+		8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "THIRD-PARTY-LICENSES.txt"; sourceTree = "<group>"; };
 		9B4E659790C8CC4807541C2F /* Marky.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marky.entitlements; sourceTree = "<group>"; };
 		A44192DD694582DF15775C5A /* FolderTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTree.swift; sourceTree = "<group>"; };
 		B8F84F44BE0FCC0E4BAAEB76 /* Marky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marky.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +156,7 @@
 				D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */,
 				3CD109F77DC48CB7D9F8020B /* markdown.css */,
 				4071FA9D42450736B8332D84 /* render.js */,
+				8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -252,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98E39866F2E12449CB0B2887 /* THIRD-PARTY-LICENSES.txt in Resources */,
 				E5CF879F81F4F1C274DBE383 /* highlight.min.js in Resources */,
 				F54E11ED2F21BACF106F3094 /* markdown-it-footnote.min.js in Resources */,
 				88F99B39522F451EF0BE3909 /* markdown-it.min.js in Resources */,
@@ -265,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82DC264A92767FD49689C7A1 /* Assets.xcassets in Resources */,
+				4BB61CE7F874F40FE5CD6332 /* THIRD-PARTY-LICENSES.txt in Resources */,
 				4E2F7B67A9F513D88FCAC662 /* bridge.js in Resources */,
 				2651C2819320D1326CB43065 /* highlight.min.js in Resources */,
 				7CA2929575D58EC4440F8F29 /* markdown-it-footnote.min.js in Resources */,

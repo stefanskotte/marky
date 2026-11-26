@@ -11,6 +11,14 @@ Markdown is rendered to HTML with [markdown-it](https://github.com/markdown-it/m
 extension use the same renderer, so a file looks the same in both. Pages never run JavaScript of their
 own, so a `<script>` in a Markdown file does nothing.
 
+## Install
+
+Download `Marky-1.0.0.dmg` from [Releases](../../releases), open it and drag Marky to Applications. It is
+signed with a Developer ID and notarized by Apple. Requires macOS 14 or later.
+
+Open Marky once so macOS registers the Quick Look extension. On first launch Marky offers to become the
+default app for `.md` files (also in Settings).
+
 ## Features
 
 - GitHub-flavoured Markdown: tables, task lists, strikethrough, autolinks, footnotes, alerts
@@ -76,6 +84,14 @@ Change All…
 | `QuickLook/` | Data-based Quick Look preview extension (sandboxed) |
 | `scripts/make-icon.swift` | Recreates the app icon |
 | `project.yml` | XcodeGen spec (the `.xcodeproj` is generated) |
+
+## Third-party software
+
+Marky bundles [markdown-it](https://github.com/markdown-it/markdown-it) and
+[markdown-it-footnote](https://github.com/markdown-it/markdown-it-footnote) (MIT) and
+[highlight.js](https://github.com/highlightjs/highlight.js) (BSD 3-Clause). Their license texts are in
+[`Shared/Resources/THIRD-PARTY-LICENSES.txt`](Shared/Resources/THIRD-PARTY-LICENSES.txt), which is also
+shipped inside the app.
 
 ## Known limitations
 
