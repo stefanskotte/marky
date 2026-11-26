@@ -56,11 +56,18 @@ KEYCHAIN_KEY="$("$TOOLS/bin/generate_keys" --account "$KEY_ACCOUNT" -p 2>/dev/nu
 "$ROOT/scripts/release.sh"
 DMG="$ROOT/build/release/Marky-$VERSION.dmg"
 [ -f "$DMG" ] || fail "no DMG at $DMG"
-SIGNATURE="$("$TOOLS/bin/sign_update" --account "$KEY_ACCOUNT" -p "$DMG")"
+# sign_update reading the Keychain itself stops on an access prompt that never goes away, so the
+# key is exported by generate_keys (which created it, so has access) to a private temp file that is
+# removed straight after signing.
+KEYDIR="$(mktemp -d)"
+chmod 700 "$KEYDIR"
+"$TOOLS/bin/generate_keys" --account "$KEY_ACCOUNT" -x "$KEYDIR/key" >/dev/null || { rm -rf "$KEYDIR"; fail "could not export the Sparkle key"; }
+SIGNATURE="$("$TOOLS/bin/sign_update" --ed-key-file "$KEYDIR/key" -p "$DMG")" || SIGNATURE=""
+"$TOOLS/bin/sign_update" --ed-key-file "$KEYDIR/key" --verify "$DMG" "$SIGNATURE" >/dev/null 2>&1 && VERIFIED=1 || VERIFIED=0
+rm -P "$KEYDIR/key"; rmdir "$KEYDIR"
+[ -n "$SIGNATURE" ] && [ "$VERIFIED" = 1 ] || fail "the DMG signature does not verify"
 LENGTH="$(stat -f%z "$DMG")"
 SHA256="$(shasum -a 256 "$DMG" | cut -d' ' -f1)"
-"$TOOLS/bin/sign_update" --account "$KEY_ACCOUNT" --verify "$DMG" "$SIGNATURE" >/dev/null \
-	|| fail "the DMG signature does not verify"
 
 echo "** Tagging and publishing v$VERSION"
 git tag -a "v$VERSION" -m "Marky $VERSION"
