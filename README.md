@@ -128,6 +128,8 @@ shipped inside the app.
   builds use the defaults.
 - Quick Look has read-only access to the disk (a sandbox exception, allowed outside the App Store) so it
   can show relative images. Remote images may not load there.
+- If Space in Finder shows only an icon and file info, Finder may still be holding an old copy of the
+  preview (seen after the 2026-11-26 bundle-id change). Log out and in, or restart Finder, to fix it.
 - The app isn't sandboxed, so it can read images and linked files next to the document.
 
 ## Backlog
