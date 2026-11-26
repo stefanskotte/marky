@@ -23,6 +23,7 @@
 		4E2F7B67A9F513D88FCAC662 /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 707C4AF31B095D33CC2CAB37 /* bridge.js */; };
 		5E47C388A70C43CC625A380B /* MarkyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591CD62A0E06A43CC48EA9F /* MarkyApp.swift */; };
 		751F6D967A06F02A131ABF5F /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4325992E10503892A87DDFD /* DocumentModel.swift */; };
+		75E1BD6A076E8BE7A2EC98D3 /* RootRelativePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1988B06FB00B3AB6CB1F0B58 /* RootRelativePaths.swift */; };
 		7CA2929575D58EC4440F8F29 /* markdown-it-footnote.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */; };
 		7F8CA0361EBE3D9DADB43BF0 /* MarkdownRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BBC8C9DBE3AE29E04ABFE0 /* MarkdownRenderer.swift */; };
 		8051336D640C8515F503D06A /* MarkdownWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E94E13B25163ACABCC2062 /* MarkdownWebView.swift */; };
@@ -31,6 +32,7 @@
 		8B548FA73DC22359313FC8F4 /* MarkyQuickLook.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */; };
 		98E39866F2E12449CB0B2887 /* THIRD-PARTY-LICENSES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */; };
+		9D1E64E96C64ECB52E48790E /* RootRelativePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1988B06FB00B3AB6CB1F0B58 /* RootRelativePaths.swift */; };
 		A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */; };
 		AA39D5BB3AC4B10740BF773A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = DD5B9618CF3EB564DA4EDF61 /* Sparkle */; };
 		AD7FE3D1D40DF94C7A344AAB /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
@@ -73,6 +75,7 @@
 		04CEA98BBC135BF030A18611 /* Marky-Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Marky-Release.entitlements"; sourceTree = "<group>"; };
 		0966514D6FE0B83806EB868B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		13D81DE90B9AE155EA54DA16 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
+		1988B06FB00B3AB6CB1F0B58 /* RootRelativePaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootRelativePaths.swift; sourceTree = "<group>"; };
 		1C6FC6AF0A9A051654628B63 /* QuickLook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickLook.entitlements; sourceTree = "<group>"; };
 		28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		2E429D221244F15C7C00963F /* highlight.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = highlight.min.js; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				47BBC8C9DBE3AE29E04ABFE0 /* MarkdownRenderer.swift */,
+				1988B06FB00B3AB6CB1F0B58 /* RootRelativePaths.swift */,
 				5FF7F661B476EBBFB81273CB /* SharedSettings.swift */,
 				C26A15EB2E6E296DABB09D4B /* Resources */,
 			);
@@ -335,6 +339,7 @@
 				7F8CA0361EBE3D9DADB43BF0 /* MarkdownRenderer.swift in Sources */,
 				8051336D640C8515F503D06A /* MarkdownWebView.swift in Sources */,
 				5E47C388A70C43CC625A380B /* MarkyApp.swift in Sources */,
+				75E1BD6A076E8BE7A2EC98D3 /* RootRelativePaths.swift in Sources */,
 				192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */,
 				DB5DCFE671D75DD0DF3D6163 /* SharedSettings.swift in Sources */,
 				36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */,
@@ -349,6 +354,7 @@
 			files = (
 				0032913E953527E760EC1D0C /* MarkdownRenderer.swift in Sources */,
 				8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */,
+				9D1E64E96C64ECB52E48790E /* RootRelativePaths.swift in Sources */,
 				D4D4B94D43D65E444E7945FE /* SharedSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

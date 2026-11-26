@@ -45,7 +45,8 @@ default app for `.md` files (also in Settings).
 - Find with every match highlighted and a match count (⌘F, ⌘G, ⇧⌘G, ⌘E, Esc)
 - Zoom (⌘+ / ⌘= / ⌘- / ⌘0), remembered between launches
 - Links: web links open in your browser, links to other `.md` files open in Marky, `#anchors` scroll the page
-- Relative images next to the file are shown
+- Relative images next to the file are shown. Paths starting with `/` (`<img src="/Images/board.jpg">`) are read
+  from the repository root, as on GitHub
 - Print (⌘P), Export as PDF (⌥⌘P, paginated with the print style), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
   Copy File Path (⌥⌘C), Reload (⌘R)
 - Settings (⌘,): appearance (Auto / Light / Dark), style (Marky / GitHub), font (System / Serif / Rounded / Monospaced), font size,

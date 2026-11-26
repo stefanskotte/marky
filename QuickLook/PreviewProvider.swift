@@ -16,7 +16,8 @@ final class PreviewProvider: QLPreviewProvider, QLPreviewingController {
         let settings = SharedSettings.group ?? UserDefaults.standard
         let output = renderer.render(text, options: settings.renderOptions)
         var attachments: [String: QLPreviewReplyAttachment] = [:]
-        let body = Self.inlineLocalImages(in: output.html, relativeTo: url, attachments: &attachments)
+        let html = RootRelativePaths.resolve(in: output.html, document: url)
+        let body = Self.inlineLocalImages(in: html, relativeTo: url, attachments: &attachments)
         let page = MarkdownRenderer.page(body: body, title: url.lastPathComponent, style: settings.pageStyle,
                                          theme: SharedSettings.theme(in: settings))
 

@@ -132,7 +132,7 @@ final class DocumentModel: ObservableObject {
     private func render() {
         let output = Self.renderer?.render(text, options: UserDefaults.standard.renderOptions)
             ?? MarkdownRenderer.Output(html: "<p>Renderer failed to load.</p>", headings: [], title: nil)
-        html = output.html
+        html = RootRelativePaths.resolve(in: output.html, document: fileURL)
         headings = output.headings
         title = output.title
         pushContent()
