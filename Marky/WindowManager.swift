@@ -124,11 +124,25 @@ final class WindowManager: ObservableObject {
         }
         window.makeKeyAndOrderFront(nil)
         active = controller.model
+        refreshTabTitles()
+    }
+
+    /// Tabs whose files share a name show their folder too ("hardware › README.md").
+    func refreshTabTitles() {
+        let byName = Dictionary(grouping: controllers) { $0.model.fileURL.lastPathComponent }
+        for c in controllers {
+            let url = c.model.fileURL
+            let clash = (byName[url.lastPathComponent]?.count ?? 0) > 1
+            c.window?.tab.title = clash
+                ? "\(url.deletingLastPathComponent().lastPathComponent) › \(url.lastPathComponent)"
+                : url.lastPathComponent
+        }
     }
 
     func didClose(_ controller: ViewerWindowController) {
         controllers.removeAll { $0 === controller }
         if active === controller.model { active = nil }
+        refreshTabTitles()
     }
 
     func showOpenPanel(newWindow: Bool = false) {

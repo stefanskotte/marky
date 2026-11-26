@@ -103,8 +103,8 @@ private struct FilesView: View {
     var body: some View {
         // Selecting a row (click or arrow keys) shows that file in this tab.
         let selection = Binding<URL?>(
-            get: { model.fileURL },
-            set: { url in if let url { model.navigate(to: url) } })
+            get: { model.sidebarSelection ?? model.fileURL },
+            set: { model.selectInSidebar($0) })
 
         List(selection: selection) {
             Section(model.rootURL.lastPathComponent) {
@@ -112,12 +112,20 @@ private struct FilesView: View {
             }
         }
         .listStyle(.sidebar)
+        .onKeyPress(.rightArrow) { model.sidebarArrow(right: true) ? .handled : .ignored }
+        .onKeyPress(.leftArrow) { model.sidebarArrow(right: false) ? .handled : .ignored }
         .overlay {
             if model.tree.isEmpty {
                 Text("No Markdown files").foregroundStyle(.secondary)
             }
         }
     }
+}
+
+/// Outside a split view the sidebar list doesn't paint its selection; draw it.
+@ViewBuilder
+private func rowHighlight(_ on: Bool) -> some View {
+    if on { RoundedRectangle(cornerRadius: 6).fill(Color.primary.opacity(0.1)).padding(.horizontal, 10) }
 }
 
 private struct FileRow: View {
@@ -136,16 +144,14 @@ private struct FileRow: View {
             } label: {
                 Label(node.name, systemImage: "folder")
             }
+            .tag(node.url)
+            .listRowBackground(rowHighlight(node.url == model.sidebarSelection))
         } else {
             Label(node.name, systemImage: "doc.text")
                 .lineLimit(1)
                 .help(node.url.path)
                 .tag(node.url)
-                // Outside a split view the sidebar list doesn't paint its selection; draw it.
-                .listRowBackground(
-                    node.url == model.fileURL
-                        ? RoundedRectangle(cornerRadius: 6).fill(Color.primary.opacity(0.1)).padding(.horizontal, 10)
-                        : nil)
+                .listRowBackground(rowHighlight(node.url == (model.sidebarSelection ?? model.fileURL)))
                 .contextMenu {
                     Button("Open in New Tab") { WindowManager.shared.open(node.url, nextTo: model.webView?.window) }
                     Button("Open in New Window") { WindowManager.shared.open(node.url, newWindow: true) }

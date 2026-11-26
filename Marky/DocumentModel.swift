@@ -19,6 +19,9 @@ final class DocumentModel: ObservableObject {
     @Published private(set) var rootURL: URL
     @Published private(set) var tree: [FileNode] = []
     @Published var expanded: Set<URL> = []
+    /// Highlighted row in the Files list: the current file, or a folder picked with the keyboard.
+    @Published var sidebarSelection: URL?
+    private(set) var folders: Set<URL> = []
 
     // History
     @Published private(set) var canGoBack = false
@@ -68,6 +71,7 @@ final class DocumentModel: ObservableObject {
         render()
         watch()
         expandAncestors(of: url)
+        sidebarSelection = url
         rescan()
         NSDocumentController.shared.noteNewRecentDocumentURL(url)
 
@@ -203,6 +207,8 @@ final class DocumentModel: ObservableObject {
             rescan()
         }
         expandAncestors(of: url)
+        sidebarSelection = url
+        WindowManager.shared.refreshTabTitles()
     }
 
     func goBack() {
@@ -227,9 +233,48 @@ final class DocumentModel: ObservableObject {
             let nodes = FolderScanner.scan(root: root)
             await MainActor.run { [weak self] in
                 guard let self, self.scanGeneration == generation else { return }
-                if nodes != self.tree { self.tree = nodes }
+                if nodes != self.tree {
+                    self.tree = nodes
+                    self.folders = Self.collectFolders(nodes)
+                }
             }
         }
+    }
+
+    private static func collectFolders(_ nodes: [FileNode]) -> Set<URL> {
+        var result = Set<URL>()
+        for node in nodes {
+            if let children = node.children {
+                result.insert(node.url)
+                result.formUnion(collectFolders(children))
+            }
+        }
+        return result
+    }
+
+    /// Row chosen in the Files list: files open in this tab, folders just get selected.
+    func selectInSidebar(_ url: URL?) {
+        guard let url else { return }
+        sidebarSelection = url
+        if !folders.contains(url) { navigate(to: url) }
+    }
+
+    /// → opens the selected folder; ← closes it, or moves up to the parent folder.
+    func sidebarArrow(right: Bool) -> Bool {
+        let current = sidebarSelection ?? fileURL
+        if right {
+            guard folders.contains(current), !expanded.contains(current) else { return false }
+            expanded.insert(current)
+            return true
+        }
+        if folders.contains(current), expanded.contains(current) {
+            expanded.remove(current)
+            return true
+        }
+        let parent = current.deletingLastPathComponent().standardizedFileURL
+        guard folders.contains(parent) else { return false }
+        sidebarSelection = parent
+        return true
     }
 
     private func expandAncestors(of url: URL) {

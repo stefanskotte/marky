@@ -13,10 +13,12 @@ final class PreviewProvider: QLPreviewProvider, QLPreviewingController {
             ?? String(decoding: data, as: UTF8.self)
 
         guard let renderer = MarkdownRenderer() else { throw CocoaError(.fileReadUnknown) }
-        let output = renderer.render(text)
+        let settings = SharedSettings.group ?? UserDefaults.standard
+        let output = renderer.render(text, options: settings.renderOptions)
         var attachments: [String: QLPreviewReplyAttachment] = [:]
         let body = Self.inlineLocalImages(in: output.html, relativeTo: url, attachments: &attachments)
-        let page = MarkdownRenderer.page(body: body, title: url.lastPathComponent, style: PageStyle())
+        let page = MarkdownRenderer.page(body: body, title: url.lastPathComponent, style: settings.pageStyle,
+                                         theme: SharedSettings.theme(in: settings))
 
         let reply = QLPreviewReply(dataOfContentType: .html, contentSize: CGSize(width: 900, height: 1100)) { reply in
             reply.stringEncoding = .utf8

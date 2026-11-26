@@ -12,6 +12,7 @@
 		0A663692BC0E02BBB0D32F7D /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D81DE90B9AE155EA54DA16 /* DocumentView.swift */; };
 		12872FF0E86A7CFCC636FA23 /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB11ABC178C41A1C42CAC182 /* FileWatcher.swift */; };
 		192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EBCB78AF36532529DF07F0 /* Settings.swift */; };
+		1EC0A4C12283D09F4D66222F /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1102CAF34805650F57E91A0 /* Updater.swift */; };
 		2102D52D892559B75DB2EE1A /* markdown.css in Resources */ = {isa = PBXBuildFile; fileRef = 3CD109F77DC48CB7D9F8020B /* markdown.css */; };
 		2651C2819320D1326CB43065 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2E429D221244F15C7C00963F /* highlight.min.js */; };
 		36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B38D6D99DA1A1117998E4A /* Shortcuts.swift */; };
@@ -30,9 +31,12 @@
 		8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */; };
 		98E39866F2E12449CB0B2887 /* THIRD-PARTY-LICENSES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */; };
 		A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */; };
+		AA39D5BB3AC4B10740BF773A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = DD5B9618CF3EB564DA4EDF61 /* Sparkle */; };
 		AD7FE3D1D40DF94C7A344AAB /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B2882E017071BF08802FC95A /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B5D5E32DEC7C1C9985325C6F /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */; };
+		D4D4B94D43D65E444E7945FE /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF7F661B476EBBFB81273CB /* SharedSettings.swift */; };
+		DB5DCFE671D75DD0DF3D6163 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF7F661B476EBBFB81273CB /* SharedSettings.swift */; };
 		E5CF879F81F4F1C274DBE383 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2E429D221244F15C7C00963F /* highlight.min.js */; };
 		F54E11ED2F21BACF106F3094 /* markdown-it-footnote.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */; };
 /* End PBXBuildFile section */
@@ -62,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04CEA98BBC135BF030A18611 /* Marky-Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Marky-Release.entitlements"; sourceTree = "<group>"; };
 		0966514D6FE0B83806EB868B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		13D81DE90B9AE155EA54DA16 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		1C6FC6AF0A9A051654628B63 /* QuickLook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickLook.entitlements; sourceTree = "<group>"; };
@@ -74,6 +79,7 @@
 		4071FA9D42450736B8332D84 /* render.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = render.js; sourceTree = "<group>"; };
 		47BBC8C9DBE3AE29E04ABFE0 /* MarkdownRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownRenderer.swift; sourceTree = "<group>"; };
 		52E94E13B25163ACABCC2062 /* MarkdownWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownWebView.swift; sourceTree = "<group>"; };
+		5FF7F661B476EBBFB81273CB /* SharedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSettings.swift; sourceTree = "<group>"; };
 		707C4AF31B095D33CC2CAB37 /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
 		7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it-footnote.min.js"; sourceTree = "<group>"; };
 		72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MarkyQuickLook.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,7 +87,9 @@
 		8ED905A75FE11C268DE7675F /* THIRD-PARTY-LICENSES.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "THIRD-PARTY-LICENSES.txt"; sourceTree = "<group>"; };
 		9B4E659790C8CC4807541C2F /* Marky.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marky.entitlements; sourceTree = "<group>"; };
 		A44192DD694582DF15775C5A /* FolderTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTree.swift; sourceTree = "<group>"; };
+		A7F9F94557743576DCDDEA63 /* QuickLook-Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "QuickLook-Release.entitlements"; sourceTree = "<group>"; };
 		B8F84F44BE0FCC0E4BAAEB76 /* Marky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marky.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1102CAF34805650F57E91A0 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it.min.js"; sourceTree = "<group>"; };
 		DB11ABC178C41A1C42CAC182 /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		E4325992E10503892A87DDFD /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
@@ -89,6 +97,17 @@
 		E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultApp.swift; sourceTree = "<group>"; };
 		F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D6235E61EED41D2E1B5ABCBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA39D5BB3AC4B10740BF773A /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0A0EA1894FB216C9A1A54530 /* Marky */ = {
@@ -102,10 +121,12 @@
 				A44192DD694582DF15775C5A /* FolderTree.swift */,
 				0966514D6FE0B83806EB868B /* Info.plist */,
 				52E94E13B25163ACABCC2062 /* MarkdownWebView.swift */,
+				04CEA98BBC135BF030A18611 /* Marky-Release.entitlements */,
 				9B4E659790C8CC4807541C2F /* Marky.entitlements */,
 				E591CD62A0E06A43CC48EA9F /* MarkyApp.swift */,
 				34EBCB78AF36532529DF07F0 /* Settings.swift */,
 				82B38D6D99DA1A1117998E4A /* Shortcuts.swift */,
+				C1102CAF34805650F57E91A0 /* Updater.swift */,
 				F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */,
 				8AB645D5F1448C0500A79108 /* Resources */,
 			);
@@ -126,6 +147,7 @@
 			children = (
 				2FABE8642608513BA2DB1B17 /* Info.plist */,
 				28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */,
+				A7F9F94557743576DCDDEA63 /* QuickLook-Release.entitlements */,
 				1C6FC6AF0A9A051654628B63 /* QuickLook.entitlements */,
 			);
 			path = QuickLook;
@@ -143,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				47BBC8C9DBE3AE29E04ABFE0 /* MarkdownRenderer.swift */,
+				5FF7F661B476EBBFB81273CB /* SharedSettings.swift */,
 				C26A15EB2E6E296DABB09D4B /* Resources */,
 			);
 			path = Shared;
@@ -198,6 +221,7 @@
 			buildPhases = (
 				A498C61A8AED54170ABAD6EB /* Sources */,
 				EF69C088016C2F1959B55160 /* Resources */,
+				D6235E61EED41D2E1B5ABCBE /* Frameworks */,
 				BE06AD9C5B6E69A7636F11F3 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -207,6 +231,7 @@
 			);
 			name = Marky;
 			packageProductDependencies = (
+				DD5B9618CF3EB564DA4EDF61 /* Sparkle */,
 			);
 			productName = Marky;
 			productReference = B8F84F44BE0FCC0E4BAAEB76 /* Marky.app */;
@@ -240,6 +265,9 @@
 			);
 			mainGroup = F7B4482DC2BFCADACD103515;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FB727A8D3BA01E064EA78E64 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 36877D4FBD07F559D23155BC /* Products */;
 			projectDirPath = "";
@@ -296,7 +324,9 @@
 				8051336D640C8515F503D06A /* MarkdownWebView.swift in Sources */,
 				5E47C388A70C43CC625A380B /* MarkyApp.swift in Sources */,
 				192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */,
+				DB5DCFE671D75DD0DF3D6163 /* SharedSettings.swift in Sources */,
 				36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */,
+				1EC0A4C12283D09F4D66222F /* Updater.swift in Sources */,
 				40ED370CB67DCDBA0AADE024 /* WindowManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +337,7 @@
 			files = (
 				0032913E953527E760EC1D0C /* MarkdownRenderer.swift in Sources */,
 				8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */,
+				D4D4B94D43D65E444E7945FE /* SharedSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +405,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(MARKETING_VERSION)";
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3WT5WSV6B5;
@@ -396,7 +427,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -411,7 +442,7 @@
 		60B665BEB13A81ECABE30004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = QuickLook/QuickLook.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "QuickLook/QuickLook-Release.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = QuickLook/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -429,7 +460,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Marky/Marky.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Marky/Marky-Release.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Marky/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -498,7 +529,7 @@
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(MARKETING_VERSION)";
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3WT5WSV6B5;
@@ -514,7 +545,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
@@ -557,6 +588,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FB727A8D3BA01E064EA78E64 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD5B9618CF3EB564DA4EDF61 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB727A8D3BA01E064EA78E64 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8DC334948F10BD69526F086 /* Project object */;
 }

@@ -9,6 +9,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         migrateOldDefaults()
         AppearanceMode.current.apply()
+        SharedSettings.publish()
+        NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: UserDefaults.standard, queue: .main) { _ in
+            SharedSettings.publish()
+        }
     }
 
     /// Settings from builds with the old bundle id (app.marky.Marky, before 2026-11-26).
@@ -21,6 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        _ = Updater.shared
         // Files opened from Finder arrive around launch; only restore the last
         // session (or ask for a file) on a plain launch.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -80,7 +85,14 @@ struct MarkyCommands: Commands {
             .disabled(!enabled)
     }
 
+    @ObservedObject private var updater = Updater.shared
+
     var body: some Commands {
+        CommandGroup(after: .appInfo) {
+            Button("Check for Updates\u{2026}") { updater.checkForUpdates() }
+                .disabled(!updater.canCheckForUpdates)
+        }
+
         CommandGroup(replacing: .newItem) {
             item(.newTab) { manager.newTab(from: NSApp.keyWindow) }
             item(.newWindow, "New Window…") { manager.showOpenPanel(newWindow: true) }

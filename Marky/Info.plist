@@ -51,6 +51,10 @@
 	<string>public.app-category.productivity</string>
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/stefanskotte/marky/main/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>AXwtPYmQUqz0pGv1b+ixcYFVSGiSI+ksM8DHghWDB98=</string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

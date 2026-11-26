@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Marky</title>
+    <link>https://github.com/stefanskotte/marky</link>
+    <description>Marky updates</description>
+    <language>en</language>
+    <!-- releases: newest first, added by scripts/publish-release.sh -->
+  </channel>
+</rss>

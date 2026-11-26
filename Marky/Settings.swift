@@ -36,23 +36,6 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
     }
 }
 
-extension UserDefaults {
-    var pageStyle: PageStyle {
-        PageStyle(
-            font: PageStyle.Font(rawValue: string(forKey: SettingsKey.font) ?? "") ?? .system,
-            fontSize: object(forKey: SettingsKey.fontSize) as? Double ?? 16,
-            width: PageStyle.Width(rawValue: string(forKey: SettingsKey.width) ?? "") ?? .medium
-        )
-    }
-
-    var renderOptions: MarkdownRenderer.Options {
-        MarkdownRenderer.Options(
-            highlightCode: object(forKey: SettingsKey.highlightCode) as? Bool ?? true,
-            smartTypography: object(forKey: SettingsKey.smartTypography) as? Bool ?? true
-        )
-    }
-}
-
 struct SettingsView: View {
     var body: some View {
         TabView {
@@ -112,6 +95,10 @@ struct GeneralSettingsView: View {
                 Toggle("Show the sidebar in new windows", isOn: $showSidebar)
             }
 
+            Section("Updates") {
+                UpdatesRow()
+            }
+
             Section {
                 DefaultAppRow()
                 Text("Quick Look previews follow the system appearance and use the default style. Press Space on a Markdown file in Finder to try it.")
@@ -137,5 +124,19 @@ private struct DefaultAppRow: View {
             }
         }
         .onAppear { isDefault = DefaultApp.isDefault }
+    }
+}
+
+private struct UpdatesRow: View {
+    @ObservedObject private var updater = Updater.shared
+
+    var body: some View {
+        Toggle("Check for updates automatically", isOn: Binding(
+            get: { updater.automaticallyChecksForUpdates },
+            set: { updater.automaticallyChecksForUpdates = $0 }))
+        LabeledContent("Marky \(updater.currentVersion)") {
+            Button("Check Now") { updater.checkForUpdates() }
+                .disabled(!updater.canCheckForUpdates)
+        }
     }
 }

@@ -76,10 +76,10 @@ final class MarkdownRenderer {
         "default-src 'none'; img-src * data: blob: marky-doc: cid:; media-src * marky-doc:; " +
         "style-src 'unsafe-inline'; font-src data: marky-doc:; script-src 'none'"
 
-    static func page(body: String, title: String, style: PageStyle) -> String {
+    static func page(body: String, title: String, style: PageStyle, theme: String? = nil) -> String {
         """
         <!doctype html>
-        <html>
+        <html\(theme.map { " data-theme=\"\($0)\"" } ?? "")>
         <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Security-Policy" content="\(contentSecurityPolicy)">

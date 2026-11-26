@@ -49,16 +49,33 @@ ditto "$DD/Build/Products/Release/Marky.app" "$APP"
 VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
 DMG="$OUT/Marky-$VERSION.dmg"
 
+echo "** Signing nested code (inside-out)"
+SIGN=(codesign --force --options runtime --timestamp --sign "$IDENTITY")
+SPK="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
+[ -d "$SPK" ] || fail "Sparkle.framework missing from the app"
+"${SIGN[@]}" "$SPK/XPCServices/Installer.xpc"
+"${SIGN[@]}" --preserve-metadata=entitlements "$SPK/XPCServices/Downloader.xpc"
+"${SIGN[@]}" "$SPK/Autoupdate"
+"${SIGN[@]}" "$SPK/Updater.app"
+"${SIGN[@]}" "$APP/Contents/Frameworks/Sparkle.framework"
+"${SIGN[@]}" --entitlements "$ROOT/QuickLook/QuickLook-Release.entitlements" "$APP/Contents/PlugIns/MarkyQuickLook.appex"
+"${SIGN[@]}" --entitlements "$ROOT/Marky/Marky-Release.entitlements" "$APP"
+
 echo "** Checking signature"
 codesign --verify --deep --strict "$APP" || fail "codesign verify"
-for bundle in "$APP" "$APP/Contents/PlugIns/MarkyQuickLook.appex"; do
+for bundle in "$APP" "$APP/Contents/PlugIns/MarkyQuickLook.appex" "$APP/Contents/Frameworks/Sparkle.framework" \
+	"$SPK/Autoupdate" "$SPK/Updater.app" "$SPK/XPCServices/Installer.xpc" "$SPK/XPCServices/Downloader.xpc"; do
 	info="$(codesign -dvv "$bundle" 2>&1)"
 	grep -qF "Authority=$IDENTITY" <<<"$info" || fail "$(basename "$bundle") is not signed by $IDENTITY"
 	grep -q 'flags=.*runtime' <<<"$info" || fail "$(basename "$bundle") lacks the hardened runtime"
 	grep -q 'Timestamp=' <<<"$info" || fail "$(basename "$bundle") has no secure timestamp"
 	! codesign -d --entitlements - "$bundle" 2>/dev/null | grep -q get-task-allow || fail "$(basename "$bundle") has get-task-allow"
 done
-echo "ok app + Quick Look extension: Developer ID, hardened runtime, timestamp"
+codesign -d --entitlements - "$APP" 2>/dev/null | grep -q '3WT5WSV6B5.dk.enhance-it.marky' || fail "app lacks the App Group"
+codesign -d --entitlements - "$APP/Contents/PlugIns/MarkyQuickLook.appex" 2>/dev/null | grep -q '3WT5WSV6B5.dk.enhance-it.marky' || fail "Quick Look lacks the App Group"
+[ -n "$(/usr/libexec/PlistBuddy -c 'Print :SUPublicEDKey' "$APP/Contents/Info.plist" 2>/dev/null)" ] || fail "Info.plist has no SUPublicEDKey"
+[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Contents/Info.plist")" = "$VERSION" ] || fail "CFBundleVersion differs from $VERSION (Sparkle compares it)"
+echo "ok app, Quick Look, Sparkle: Developer ID, hardened runtime, timestamp; App Group; update keys"
 
 if [ "$NOTARIZE" = 1 ]; then
 	echo "** Notarizing the app"
