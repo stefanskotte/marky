@@ -24,7 +24,7 @@ own, so a `<script>` in a Markdown file does nothing.
   ⌘-click a link, or right-click a file, to open it in a new tab. Native macOS tabs: ⌘T new tab, ⌘W close,
   ⌃⇥ / ⌃⇧⇥ next/previous tab, ⌘1–⌘8 jump to a tab, ⌘9 last tab, ⌘[ / ⌘] back/forward. ⌘O also opens a folder (it
   shows the folder's README). Open tabs are restored at the next launch.
-- Sidebar ⌃⌘S, Files ⌃⌘1, Outline ⌃⌘2
+- Sidebar ⌃⌘S (hidden by default, slides in; drag its edge to resize), Files ⌃⌘1, Outline ⌃⌘2
 - Find with every match highlighted and a match count (⌘F, ⌘G, ⇧⌘G, ⌘E, Esc)
 - Zoom (⌘+ / ⌘= / ⌘- / ⌘0), remembered between launches
 - Links: web links open in your browser, links to other `.md` files open in Marky, `#anchors` scroll the page
@@ -92,9 +92,9 @@ Change All…
   app and the extension.
 - [x] **Duplicate Quick Look registrations** (3 were listed): `scripts/clean-registrations.sh`, also run by
   `release.sh`. Done 2026-11-26.
-- [ ] **Smeared name in the Files sidebar:** the selected row's text (e.g. `README.md`) can look squeezed
-  or doubled after a file is opened as a new tab from Finder or `open`. Navigating within a tab draws it
-  correctly. Cause not found yet; not the line limit or font weight.
+- [x] **Smeared name in the Files sidebar / sidebar flashing on load:** SwiftUI's split view laid the sidebar
+  out visible and animated it away on load. Replaced with a plain sidebar that starts in the right state and
+  slides in when shown (draggable width). Done 2026-11-26.
 - [ ] **Keyboard in the Files sidebar:** → / ← don't expand or collapse folders.
 - [ ] **Same-name tabs:** two `README.md` tabs look identical; show the folder when names clash.
 - [ ] **Themes and formats:** see which popular themes we can support (GitHub, GitLab, Obsidian, Typora,

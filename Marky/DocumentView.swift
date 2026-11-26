@@ -2,12 +2,23 @@ import SwiftUI
 
 struct DocumentView: View {
     @ObservedObject var model: DocumentModel
+    @AppStorage(SettingsKey.sidebarWidth) private var sidebarWidth: Double = 240
+    @State private var dragStartWidth: Double?
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $model.columnVisibility) {
-            Sidebar(model: model)
-                .navigationSplitViewColumnWidth(min: 180, ideal: 240, max: 400)
-        } detail: {
+        // A plain HStack instead of NavigationSplitView: the split view lays the
+        // sidebar out visible and then animates it away on load, which flashed it
+        // and left squeezed text behind. This starts in the right state and
+        // slides only when toggled.
+        HStack(spacing: 0) {
+            if model.sidebarVisible {
+                Sidebar(model: model)
+                    .frame(width: sidebarWidth)
+                    .background(VisualEffect(material: .sidebar).ignoresSafeArea())
+                    .overlay(alignment: .trailing) { resizeHandle }
+                    .transition(.move(edge: .leading))
+                Divider().ignoresSafeArea()
+            }
             MarkdownWebView(model: model)
                 .overlay(alignment: .topTrailing) {
                     if model.findVisible {
@@ -19,11 +30,47 @@ struct DocumentView: View {
                 .animation(.easeOut(duration: 0.15), value: model.findVisible)
                 .ignoresSafeArea(.container, edges: .bottom)
         }
+        .clipped()
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                Button { model.toggleSidebar() } label: { Image(systemName: "sidebar.left") }
+                    .help(model.sidebarVisible ? "Hide Sidebar" : "Show Sidebar")
+            }
+        }
         .navigationTitle(model.displayName)
         .navigationSubtitle(model.fileURL.deletingLastPathComponent().lastPathComponent)
         .navigationDocument(model.fileURL)
         .frame(minWidth: 420, minHeight: 300)
     }
+
+    private var resizeHandle: some View {
+        Color.clear
+            .frame(width: 6)
+            .contentShape(Rectangle())
+            .onHover { inside in inside ? NSCursor.resizeLeftRight.push() : NSCursor.pop() }
+            .gesture(DragGesture(minimumDistance: 1)
+                .onChanged { value in
+                    let start = dragStartWidth ?? sidebarWidth
+                    dragStartWidth = start
+                    sidebarWidth = min(420, max(170, start + value.translation.width))
+                }
+                .onEnded { _ in dragStartWidth = nil })
+    }
+}
+
+/// NSVisualEffectView, for the translucent sidebar background.
+private struct VisualEffect: NSViewRepresentable {
+    let material: NSVisualEffectView.Material
+
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = .behindWindow
+        view.state = .followsWindowActiveState
+        return view
+    }
+
+    func updateNSView(_ view: NSVisualEffectView, context: Context) {}
 }
 
 private struct Sidebar: View {
@@ -94,6 +141,11 @@ private struct FileRow: View {
                 .lineLimit(1)
                 .help(node.url.path)
                 .tag(node.url)
+                // Outside a split view the sidebar list doesn't paint its selection; draw it.
+                .listRowBackground(
+                    node.url == model.fileURL
+                        ? RoundedRectangle(cornerRadius: 6).fill(Color.primary.opacity(0.1)).padding(.horizontal, 10)
+                        : nil)
                 .contextMenu {
                     Button("Open in New Tab") { WindowManager.shared.open(node.url, nextTo: model.webView?.window) }
                     Button("Open in New Window") { WindowManager.shared.open(node.url, newWindow: true) }

@@ -119,7 +119,7 @@ struct MarkyCommands: Commands {
         }
 
         CommandGroup(before: .toolbar) {
-            item(.toggleSidebar, model?.columnVisibility == .detailOnly ? "Show Sidebar" : "Hide Sidebar",
+            item(.toggleSidebar, model?.sidebarVisible == true ? "Hide Sidebar" : "Show Sidebar",
                  enabled: model != nil) { model?.toggleSidebar() }
             item(.showFiles, enabled: model != nil) { model?.show(.files) }
             item(.showOutline, enabled: model != nil) { model?.show(.outline) }

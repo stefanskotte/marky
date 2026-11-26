@@ -12,6 +12,7 @@ enum SettingsKey {
     static let openInTabs = "openInTabs"
     static let sidebarMode = "sidebarMode"
     static let showSidebar = "showSidebar"
+    static let sidebarWidth = "sidebarWidth"
     static let zoom = "zoom"
 }
 

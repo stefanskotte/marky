@@ -15,7 +15,7 @@ final class DocumentModel: ObservableObject {
 
     // Sidebar
     @Published var sidebarMode: SidebarMode { didSet { saveSidebarState() } }
-    @Published var columnVisibility: NavigationSplitViewVisibility
+    @Published var sidebarVisible: Bool
     @Published private(set) var rootURL: URL
     @Published private(set) var tree: [FileNode] = []
     @Published var expanded: Set<URL> = []
@@ -58,11 +58,11 @@ final class DocumentModel: ObservableObject {
         self.rootURL = (root ?? FolderScanner.projectRoot(for: url)).standardizedFileURL
         if let other {
             sidebarMode = other.sidebarMode
-            columnVisibility = other.columnVisibility
+            sidebarVisible = other.sidebarVisible
         } else {
             let d = UserDefaults.standard
             sidebarMode = SidebarMode(rawValue: d.string(forKey: SettingsKey.sidebarMode) ?? "") ?? .files
-            columnVisibility = d.bool(forKey: SettingsKey.showSidebar) ? .all : .detailOnly
+            sidebarVisible = d.bool(forKey: SettingsKey.showSidebar)
         }
         text = Self.read(url) ?? ""
         render()
@@ -241,12 +241,12 @@ final class DocumentModel: ObservableObject {
     }
 
     func toggleSidebar() {
-        columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
+        withAnimation(.easeInOut(duration: 0.22)) { sidebarVisible.toggle() }
     }
 
     func show(_ mode: SidebarMode) {
         sidebarMode = mode
-        if columnVisibility == .detailOnly { columnVisibility = .all }
+        if !sidebarVisible { withAnimation(.easeInOut(duration: 0.22)) { sidebarVisible = true } }
     }
 
     private func saveSidebarState() {
