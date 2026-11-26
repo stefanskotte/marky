@@ -53,6 +53,18 @@ extension UserDefaults {
 }
 
 struct SettingsView: View {
+    var body: some View {
+        TabView {
+            GeneralSettingsView()
+                .tabItem { Label("General", systemImage: "gearshape") }
+            ShortcutsSettingsView()
+                .frame(width: 500, height: 560)
+                .tabItem { Label("Shortcuts", systemImage: "keyboard") }
+        }
+    }
+}
+
+struct GeneralSettingsView: View {
     @AppStorage(SettingsKey.appearance) private var appearance: AppearanceMode = .auto
     @AppStorage(SettingsKey.font) private var font: PageStyle.Font = .system
     @AppStorage(SettingsKey.fontSize) private var fontSize: Double = 16

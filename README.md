@@ -18,17 +18,19 @@ own, so a `<script>` in a Markdown file does nothing.
 - **Tabs and folders**: a sidebar with **Files** (the project's Markdown files: the git repository, or
   the file's folder) and **Outline** (the headings). Clicking a file or a link shows it in the same tab;
   ⌘-click a link, or right-click a file, to open it in a new tab. Native macOS tabs: ⌘T new tab, ⌘W close,
-  ⇧⌘[ / ⇧⌘] previous/next tab, ⌘1–⌘9 jump to a tab, ⌘[ / ⌘] back/forward. ⌘O also opens a folder (it
+  ⌃⇥ / ⌃⇧⇥ next/previous tab, ⌘1–⌘8 jump to a tab, ⌘9 last tab, ⌘[ / ⌘] back/forward. ⌘O also opens a folder (it
   shows the folder's README). Open tabs are restored at the next launch.
 - Sidebar ⌃⌘S, Files ⌃⌘1, Outline ⌃⌘2
 - Find with every match highlighted and a match count (⌘F, ⌘G, ⇧⌘G, ⌘E, Esc)
 - Zoom (⌘+ / ⌘= / ⌘- / ⌘0), remembered between launches
 - Links: web links open in your browser, links to other `.md` files open in Marky, `#anchors` scroll the page
 - Relative images next to the file are shown
-- Print / Save as PDF (⌘P), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
+- Print (⌘P), Export as PDF (⌥⌘P, paginated with the print style), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
   Copy File Path (⌥⌘C), Reload (⌘R)
 - Settings (⌘,): appearance (Auto / Light / Dark), font (System / Serif / Rounded / Monospaced), font size,
   line width, syntax highlighting, smart quotes, auto-reload, open files as tabs
+- **Every keyboard shortcut is editable** in Settings → Shortcuts (click, press the keys; ⌫ removes,
+  right-click resets one, Restore Defaults resets all). Clashes are flagged.
 
 ## Build
 

@@ -327,17 +327,45 @@ final class DocumentModel: ObservableObject {
 
     // MARK: File actions
 
-    func print() {
-        guard let webView, let window = webView.window else { return }
+    private func printOperation(saveTo url: URL? = nil) -> NSPrintOperation? {
+        guard let webView else { return nil }
         let info = NSPrintInfo.shared.copy() as! NSPrintInfo
         info.horizontalPagination = .fit
         info.verticalPagination = .automatic
         info.isVerticallyCentered = false
         info.topMargin = 36; info.bottomMargin = 36; info.leftMargin = 36; info.rightMargin = 36
+        if let url {
+            info.jobDisposition = .save
+            info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = url
+        }
         let op = webView.printOperation(with: info)
         op.jobTitle = displayName
         op.view?.frame = webView.bounds
+        if url != nil {
+            op.showsPrintPanel = false
+            op.showsProgressPanel = false
+        }
+        return op
+    }
+
+    func print() {
+        guard let window = webView?.window, let op = printOperation() else { return }
         op.runModal(for: window, delegate: nil, didRun: nil, contextInfo: nil)
+    }
+
+    /// Paginated PDF using the print stylesheet (light colours, no find highlights).
+    func exportPDF() {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.pdf]
+        panel.nameFieldStringValue = fileURL.deletingPathExtension().lastPathComponent + ".pdf"
+        panel.directoryURL = fileURL.deletingLastPathComponent()
+        let handler: (NSApplication.ModalResponse) -> Void = { [weak self] response in
+            guard response == .OK, let url = panel.url, let self,
+                  let window = self.webView?.window, let op = self.printOperation(saveTo: url) else { return }
+            op.runModal(for: window, delegate: nil, didRun: nil, contextInfo: nil)
+        }
+        if let window = webView?.window { panel.beginSheetModal(for: window, completionHandler: handler) }
+        else { handler(panel.runModal()) }
     }
 
     func exportHTML() {

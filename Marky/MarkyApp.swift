@@ -57,17 +57,23 @@ struct MarkyApp: App {
 
 struct MarkyCommands: Commands {
     @ObservedObject private var manager = WindowManager.shared
+    @ObservedObject private var keys = ShortcutStore.shared
 
     private var model: DocumentModel? { manager.active }
 
+    /// A menu item whose shortcut comes from Settings → Shortcuts.
+    private func item(_ action: ShortcutAction, _ title: String? = nil, enabled: Bool = true,
+                      perform: @escaping () -> Void) -> some View {
+        Button(title ?? action.title, action: perform)
+            .keyboardShortcut(keys.keyboardShortcut(action))
+            .disabled(!enabled)
+    }
+
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
-            Button("New Tab") { manager.newTab(from: NSApp.keyWindow) }
-                .keyboardShortcut("t")
-            Button("New Window…") { manager.showOpenPanel(newWindow: true) }
-                .keyboardShortcut("n")
-            Button("Open…") { manager.showOpenPanel() }
-                .keyboardShortcut("o")
+            item(.newTab) { manager.newTab(from: NSApp.keyWindow) }
+            item(.newWindow, "New Window…") { manager.showOpenPanel(newWindow: true) }
+            item(.open, "Open…") { manager.showOpenPanel() }
             Menu("Open Recent") {
                 let _ = manager.recentsVersion
                 ForEach(NSDocumentController.shared.recentDocumentURLs, id: \.self) { url in
@@ -79,85 +85,53 @@ struct MarkyCommands: Commands {
         }
 
         CommandGroup(after: .saveItem) {
-            Button("Export as HTML…") { model?.exportHTML() }
-                .keyboardShortcut("e", modifiers: [.command, .shift])
-                .disabled(model == nil)
+            item(.exportHTML, "Export as HTML…", enabled: model != nil) { model?.exportHTML() }
+            item(.exportPDF, "Export as PDF…", enabled: model != nil) { model?.exportPDF() }
             Divider()
-            Button("Reveal in Finder") { model?.revealInFinder() }
-                .keyboardShortcut("r", modifiers: [.command, .shift])
-                .disabled(model == nil)
-            Button("Open in Text Editor") { model?.openInEditor() }
-                .keyboardShortcut("o", modifiers: [.command, .option])
-                .disabled(model == nil)
-            Button("Copy File Path") { model?.copyPath() }
-                .keyboardShortcut("c", modifiers: [.command, .option])
-                .disabled(model == nil)
+            item(.revealInFinder, enabled: model != nil) { model?.revealInFinder() }
+            item(.openInEditor, enabled: model != nil) { model?.openInEditor() }
+            item(.copyPath, enabled: model != nil) { model?.copyPath() }
         }
 
         CommandGroup(replacing: .printItem) {
-            Button("Print…") { model?.print() }
-                .keyboardShortcut("p")
-                .disabled(model == nil)
+            item(.print, "Print…", enabled: model != nil) { model?.print() }
         }
 
         CommandGroup(after: .textEditing) {
             Menu("Find") {
-                Button("Find…") { model?.showFind() }
-                    .keyboardShortcut("f")
-                Button("Find Next") { model?.findNext() }
-                    .keyboardShortcut("g")
-                Button("Find Previous") { model?.findPrevious() }
-                    .keyboardShortcut("g", modifiers: [.command, .shift])
-                Button("Use Selection for Find") { model?.useSelectionForFind() }
-                    .keyboardShortcut("e")
+                item(.find, "Find…") { model?.showFind() }
+                item(.findNext) { model?.findNext() }
+                item(.findPrevious) { model?.findPrevious() }
+                item(.useSelectionForFind) { model?.useSelectionForFind() }
             }
             .disabled(model == nil)
         }
 
         CommandGroup(before: .toolbar) {
-            Button(model?.columnVisibility == .detailOnly ? "Show Sidebar" : "Hide Sidebar") { model?.toggleSidebar() }
-                .keyboardShortcut("s", modifiers: [.command, .control])
-                .disabled(model == nil)
-            Button("Files") { model?.show(.files) }
-                .keyboardShortcut("1", modifiers: [.command, .control])
-                .disabled(model == nil)
-            Button("Outline") { model?.show(.outline) }
-                .keyboardShortcut("2", modifiers: [.command, .control])
-                .disabled(model == nil)
+            item(.toggleSidebar, model?.columnVisibility == .detailOnly ? "Show Sidebar" : "Hide Sidebar",
+                 enabled: model != nil) { model?.toggleSidebar() }
+            item(.showFiles, enabled: model != nil) { model?.show(.files) }
+            item(.showOutline, enabled: model != nil) { model?.show(.outline) }
             Divider()
-            Button("Actual Size") { model?.resetZoom() }
-                .keyboardShortcut("0")
-                .disabled(model == nil)
-            Button("Zoom In") { model?.zoomIn() }
-                .keyboardShortcut("+")
-                .disabled(model == nil)
-            Button("Zoom Out") { model?.zoomOut() }
-                .keyboardShortcut("-")
-                .disabled(model == nil)
+            item(.actualSize, enabled: model != nil) { model?.resetZoom() }
+            item(.zoomIn, enabled: model != nil) { model?.zoomIn() }
+            item(.zoomOut, enabled: model != nil) { model?.zoomOut() }
             Divider()
-            Button("Reload") { model?.reloadFromDisk() }
-                .keyboardShortcut("r")
-                .disabled(model == nil)
+            item(.reload, enabled: model != nil) { model?.reloadFromDisk() }
             Divider()
         }
 
         CommandMenu("Go") {
-            Button("Back") { model?.goBack() }
-                .keyboardShortcut("[")
-                .disabled(!(model?.canGoBack ?? false))
-            Button("Forward") { model?.goForward() }
-                .keyboardShortcut("]")
-                .disabled(!(model?.canGoForward ?? false))
+            item(.back, enabled: model?.canGoBack ?? false) { model?.goBack() }
+            item(.forward, enabled: model?.canGoForward ?? false) { model?.goForward() }
             Divider()
-            Button("Previous Tab") { manager.selectPreviousTab() }
-                .keyboardShortcut("[", modifiers: [.command, .shift])
-            Button("Next Tab") { manager.selectNextTab() }
-                .keyboardShortcut("]", modifiers: [.command, .shift])
+            item(.previousTab) { manager.selectPreviousTab() }
+            item(.nextTab) { manager.selectNextTab() }
             Divider()
-            ForEach(1..<10) { n in
-                Button(n == 9 ? "Last Tab" : "Tab \(n)") { manager.selectTab(n - 1) }
-                    .keyboardShortcut(KeyEquivalent(Character("\(n)")))
+            ForEach([ShortcutAction.tab1, .tab2, .tab3, .tab4, .tab5, .tab6, .tab7, .tab8]) { action in
+                item(action) { manager.selectTab(action.tabIndex!) }
             }
+            item(.lastTab) { manager.selectLastTab() }
         }
     }
 }

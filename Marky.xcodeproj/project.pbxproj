@@ -14,6 +14,7 @@
 		192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EBCB78AF36532529DF07F0 /* Settings.swift */; };
 		2102D52D892559B75DB2EE1A /* markdown.css in Resources */ = {isa = PBXBuildFile; fileRef = 3CD109F77DC48CB7D9F8020B /* markdown.css */; };
 		2651C2819320D1326CB43065 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2E429D221244F15C7C00963F /* highlight.min.js */; };
+		36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B38D6D99DA1A1117998E4A /* Shortcuts.swift */; };
 		39BB5F5F947D85D603EE4C1E /* FolderTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44192DD694582DF15775C5A /* FolderTree.swift */; };
 		40ED370CB67DCDBA0AADE024 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */; };
 		4E2F7B67A9F513D88FCAC662 /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 707C4AF31B095D33CC2CAB37 /* bridge.js */; };
@@ -73,6 +74,7 @@
 		707C4AF31B095D33CC2CAB37 /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
 		7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it-footnote.min.js"; sourceTree = "<group>"; };
 		72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MarkyQuickLook.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		82B38D6D99DA1A1117998E4A /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		9B4E659790C8CC4807541C2F /* Marky.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marky.entitlements; sourceTree = "<group>"; };
 		A44192DD694582DF15775C5A /* FolderTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTree.swift; sourceTree = "<group>"; };
 		B8F84F44BE0FCC0E4BAAEB76 /* Marky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marky.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 				9B4E659790C8CC4807541C2F /* Marky.entitlements */,
 				E591CD62A0E06A43CC48EA9F /* MarkyApp.swift */,
 				34EBCB78AF36532529DF07F0 /* Settings.swift */,
+				82B38D6D99DA1A1117998E4A /* Shortcuts.swift */,
 				F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */,
 				8AB645D5F1448C0500A79108 /* Resources */,
 			);
@@ -283,6 +286,7 @@
 				8051336D640C8515F503D06A /* MarkdownWebView.swift in Sources */,
 				5E47C388A70C43CC625A380B /* MarkyApp.swift in Sources */,
 				192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */,
+				36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */,
 				40ED370CB67DCDBA0AADE024 /* WindowManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

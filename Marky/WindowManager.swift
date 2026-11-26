@@ -148,12 +148,12 @@ final class WindowManager: ObservableObject {
 
     func selectTab(_ index: Int) {
         let tabs = keyTabGroup
-        guard !tabs.isEmpty else { return }
-        // ⌘9 is always the last tab, as in Safari.
-        let i = index >= 8 ? tabs.count - 1 : index
-        guard i < tabs.count else { return }
-        tabs[i].makeKeyAndOrderFront(nil)
+        guard index < tabs.count else { return }
+        tabs[index].makeKeyAndOrderFront(nil)
     }
+
+    /// ⌘9 is always the last tab, as in Safari.
+    func selectLastTab() { keyTabGroup.last?.makeKeyAndOrderFront(nil) }
 
     func selectNextTab() { NSApp.keyWindow?.selectNextTab(nil) }
     func selectPreviousTab() { NSApp.keyWindow?.selectPreviousTab(nil) }
