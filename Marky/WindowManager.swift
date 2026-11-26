@@ -94,6 +94,10 @@ final class WindowManager: ObservableObject {
         let preferTabs = UserDefaults.standard.object(forKey: SettingsKey.openInTabs) as? Bool ?? true
         let hostWindow = newWindow ? nil : (host ?? (preferTabs ? frontViewerWindow : nil))
         let hostModel = controllers.first { $0.window === hostWindow }?.model
+        // A file inside the host tab's folder keeps that folder in the Files sidebar.
+        if root == nil, let hostRoot = hostModel?.rootURL, file.path.hasPrefix(hostRoot.path + "/") {
+            root = hostRoot
+        }
         show(ViewerWindowController(model: DocumentModel(fileURL: file, root: root, inheriting: hostModel)), joining: hostWindow)
         recentsVersion += 1
     }

@@ -7,7 +7,17 @@ extension UTType {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
+        migrateOldDefaults()
         AppearanceMode.current.apply()
+    }
+
+    /// Settings from builds with the old bundle id (app.marky.Marky, before 2026-11-26).
+    private func migrateOldDefaults() {
+        let d = UserDefaults.standard
+        guard !d.bool(forKey: "migratedOldDefaults") else { return }
+        d.set(true, forKey: "migratedOldDefaults")
+        guard let old = UserDefaults(suiteName: "app.marky.Marky")?.persistentDomain(forName: "app.marky.Marky") else { return }
+        for (key, value) in old where d.object(forKey: key) == nil { d.set(value, forKey: key) }
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
