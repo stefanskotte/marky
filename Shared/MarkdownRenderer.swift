@@ -34,7 +34,7 @@ final class MarkdownRenderer {
             NSLog("Marky renderer JS error: \(exception?.toString() ?? "?")")
             failed = true
         }
-        for name in ["markdown-it.min", "markdown-it-footnote.min", "highlight.min", "render"] {
+        for name in ["markdown-it.min", "markdown-it-footnote.min", "markdown-it-emoji.min", "highlight.min", "render"] {
             guard let url = Self.bundle.url(forResource: name, withExtension: "js"),
                   let source = try? String(contentsOf: url, encoding: .utf8) else {
                 NSLog("Marky: missing resource \(name).js")
@@ -64,11 +64,15 @@ final class MarkdownRenderer {
 
     // MARK: - Page assembly
 
-    static let stylesheet: String = {
-        guard let url = bundle.url(forResource: "markdown", withExtension: "css"),
-              let css = try? String(contentsOf: url, encoding: .utf8) else { return "" }
-        return css
-    }()
+    static let stylesheet = resource("markdown", "css")
+    /// github-markdown-css, applied when the article has class markdown-body (the GitHub style).
+    static let githubStylesheet = resource("github", "css")
+
+    private static func resource(_ name: String, _ ext: String) -> String {
+        guard let url = bundle.url(forResource: name, withExtension: ext),
+              let text = try? String(contentsOf: url, encoding: .utf8) else { return "" }
+        return text
+    }
 
     /// Page-level JavaScript is never allowed: raw HTML in a Markdown file must
     /// not be able to run scripts.
@@ -79,17 +83,18 @@ final class MarkdownRenderer {
     static func page(body: String, title: String, style: PageStyle, theme: String? = nil) -> String {
         """
         <!doctype html>
-        <html\(theme.map { " data-theme=\"\($0)\"" } ?? "")>
+        <html\(theme.map { " data-theme=\"\($0)\"" } ?? "")\(style.look == .github ? " class=\"gh\"" : "")>
         <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Security-Policy" content="\(contentSecurityPolicy)">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>\(escape(title))</title>
         <style>\(stylesheet)</style>
+        <style>\(githubStylesheet)</style>
         <style id="marky-vars">\(style.css)</style>
         </head>
         <body>
-        <article id="content">
+        <article id="content"\(style.look == .github ? " class=\"markdown-body\"" : "")>
         \(body)
         </article>
         </body>
@@ -105,8 +110,15 @@ final class MarkdownRenderer {
     }
 }
 
-/// The user-adjustable typography, expressed as CSS variables.
+/// The user-adjustable look, expressed as CSS variables plus the style class.
 struct PageStyle: Equatable {
+    /// Marky's own stylesheet, or github.com's (which keeps GitHub's font).
+    enum Look: String, CaseIterable, Identifiable {
+        case marky, github
+        var id: String { rawValue }
+        var label: String { self == .marky ? "Marky" : "GitHub" }
+    }
+
     enum Font: String, CaseIterable, Identifiable {
         case system, serif, rounded, mono
         var id: String { rawValue }
@@ -142,6 +154,7 @@ struct PageStyle: Equatable {
         }
     }
 
+    var look: Look = .marky
     var font: Font = .system
     var fontSize: Double = 16
     var width: Width = .medium

@@ -3,6 +3,7 @@ import SwiftUI
 
 enum SettingsKey {
     static let appearance = "appearance"
+    static let style = "style"
     static let font = "font"
     static let fontSize = "fontSize"
     static let width = "width"
@@ -50,6 +51,7 @@ struct SettingsView: View {
 
 struct GeneralSettingsView: View {
     @AppStorage(SettingsKey.appearance) private var appearance: AppearanceMode = .auto
+    @AppStorage(SettingsKey.style) private var style: PageStyle.Look = .marky
     @AppStorage(SettingsKey.font) private var font: PageStyle.Font = .system
     @AppStorage(SettingsKey.fontSize) private var fontSize: Double = 16
     @AppStorage(SettingsKey.width) private var width: PageStyle.Width = .medium
@@ -70,9 +72,15 @@ struct GeneralSettingsView: View {
             }
 
             Section("Text") {
+                Picker("Style", selection: $style) {
+                    ForEach(PageStyle.Look.allCases) { Text($0.label).tag($0) }
+                }
+                .pickerStyle(.segmented)
                 Picker("Font", selection: $font) {
                     ForEach(PageStyle.Font.allCases) { Text($0.label).tag($0) }
                 }
+                .disabled(style == .github)
+                .help(style == .github ? "The GitHub style uses GitHub's font" : "")
                 LabeledContent("Size") {
                     HStack {
                         Slider(value: $fontSize, in: 12...24, step: 1)

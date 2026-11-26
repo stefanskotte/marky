@@ -100,9 +100,12 @@
       content().innerHTML = html;
       window.scrollTo(0, y);
     },
-    setStyle: function (css) {
+    setStyle: function (css, github) {
       var el = document.getElementById("marky-vars");
       if (el) el.textContent = css;
+      document.documentElement.classList.toggle("gh", !!github);
+      var content = document.getElementById("content");
+      if (content) content.classList.toggle("markdown-body", !!github);
     },
     scrollToId: function (id) {
       var el = document.getElementById(id);

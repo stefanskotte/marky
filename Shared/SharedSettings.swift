@@ -5,7 +5,7 @@ import Foundation
 /// sandboxed extension can't read the app's own defaults.
 enum SharedSettings {
     static let groupID = "3WT5WSV6B5.dk.enhance-it.marky"
-    static let keys = ["appearance", "font", "fontSize", "width", "highlightCode", "smartTypography"]
+    static let keys = ["appearance", "style", "font", "fontSize", "width", "highlightCode", "smartTypography"]
 
     /// nil when the build has no App Group entitlement (Debug).
     static var group: UserDefaults? {
@@ -39,6 +39,7 @@ enum SharedSettings {
 extension UserDefaults {
     var pageStyle: PageStyle {
         PageStyle(
+            look: PageStyle.Look(rawValue: string(forKey: "style") ?? "") ?? .marky,
             font: PageStyle.Font(rawValue: string(forKey: "font") ?? "") ?? .system,
             fontSize: object(forKey: "fontSize") as? Double ?? 16,
             width: PageStyle.Width(rawValue: string(forKey: "width") ?? "") ?? .medium

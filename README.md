@@ -27,6 +27,9 @@ default app for `.md` files (also in Settings).
 - GitHub-flavoured Markdown: tables, task lists, strikethrough, autolinks, footnotes, alerts
   (`> [!NOTE]` / TIP / IMPORTANT / WARNING / CAUTION), YAML front matter (folded away), raw HTML
 - Syntax highlighting for 36 common languages, with light and dark palettes
+- Two styles: **Marky** (its own, follows your font choice) or **GitHub** (exactly as on github.com, via
+  [github-markdown-css](https://github.com/sindresorhus/github-markdown-css)); both light and dark
+- `:emoji:` shortcodes as on GitHub (`:rocket:` → 🚀)
 - **Quick Look**: press Space on a `.md` file in Finder. It uses the app's appearance, font, size, width and
   highlighting settings
 - Reloads automatically when the file changes on disk, keeping your scroll position (works with editors
@@ -45,7 +48,7 @@ default app for `.md` files (also in Settings).
 - Relative images next to the file are shown
 - Print (⌘P), Export as PDF (⌥⌘P, paginated with the print style), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
   Copy File Path (⌥⌘C), Reload (⌘R)
-- Settings (⌘,): appearance (Auto / Light / Dark), font (System / Serif / Rounded / Monospaced), font size,
+- Settings (⌘,): appearance (Auto / Light / Dark), style (Marky / GitHub), font (System / Serif / Rounded / Monospaced), font size,
   line width, syntax highlighting, smart quotes, auto-reload, open files as tabs, show the sidebar in new
   windows (off by default), default app for Markdown files (also asked once on first launch)
 - **Every keyboard shortcut is editable** in Settings → Shortcuts (click, press the keys; ⌫ removes,
@@ -110,8 +113,11 @@ Change All…
 ## Third-party software
 
 Marky bundles [markdown-it](https://github.com/markdown-it/markdown-it) and
-[markdown-it-footnote](https://github.com/markdown-it/markdown-it-footnote) (MIT) and
-[highlight.js](https://github.com/highlightjs/highlight.js) (BSD 3-Clause). Their license texts are in
+[markdown-it-footnote](https://github.com/markdown-it/markdown-it-footnote),
+[markdown-it-emoji](https://github.com/markdown-it/markdown-it-emoji) and
+[github-markdown-css](https://github.com/sindresorhus/github-markdown-css) (MIT), and
+[highlight.js](https://github.com/highlightjs/highlight.js) (BSD 3-Clause). `github.css` is generated from
+github-markdown-css by `scripts/vendor-github-css.py`. Their license texts are in
 [`Shared/Resources/THIRD-PARTY-LICENSES.txt`](Shared/Resources/THIRD-PARTY-LICENSES.txt), which is also
 shipped inside the app.
 
@@ -135,8 +141,7 @@ shipped inside the app.
 - [x] **Keyboard in the Files sidebar:** → / ← open and close folders, done 2026-11-26.
 - [x] **Same-name tabs** show their folder, done 2026-11-26.
 - [x] **Automatic updates** (Sparkle 2, `scripts/publish-release.sh`), done 2026-11-26.
-- [ ] **Themes and formats:** see which popular themes we can support (GitHub, GitLab, Obsidian, Typora,
-  Bear and similar "hub" styles, maybe user CSS), and extra formats/extensions (Mermaid diagrams,
-  KaTeX math, wiki-links, emoji shortcodes).
+- [x] **Themes and formats:** GitHub style + emoji shortcodes, done 2026-11-26. Other themes, user CSS,
+  Mermaid, KaTeX and wiki-links were considered and dropped to keep Marky small (2026-11-26).
 - [x] **Folder navigation and tabs:** Files sidebar + native tabs (⌘T / ⌘W), done 2026-11-26.
 - [x] **Quick Look relative images**: fixed 2026-11-26 with a read-only sandbox exception.

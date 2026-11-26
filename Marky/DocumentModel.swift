@@ -156,7 +156,8 @@ final class DocumentModel: ObservableObject {
         let options = UserDefaults.standard.renderOptions
         if style != lastStyle {
             lastStyle = style
-            webView?.callAsyncJavaScript("marky.setStyle(css)", arguments: ["css": style.css],
+            webView?.callAsyncJavaScript("marky.setStyle(css, github)",
+                                         arguments: ["css": style.css, "github": style.look == .github],
                                          in: nil, in: .defaultClient)
         }
         if options.highlightCode != lastOptions.highlightCode || options.smartTypography != lastOptions.smartTypography {

@@ -251,6 +251,10 @@ mark.marky-hit.current { background: var(--mark-current); color: #1f2328; }
 .hljs-emphasis { font-style: italic; }
 .hljs-strong { font-weight: 600; }
 
+/* GitHub style: github.css styles the article (.markdown-body); keep the page around it in step. */
+html.gh, html.gh body { background: var(--bgColor-default); color: var(--fgColor-default); }
+html.gh .markdown-body { font-size: var(--marky-size); background: transparent; }
+
 @media print {
   :root {
     color-scheme: light;

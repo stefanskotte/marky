@@ -29,6 +29,10 @@ syntax highlighting, and watches the file so it updates while you edit it elsewh
 - [x] Quick Look preview
 - [ ] World domination
 
+## Emoji
+
+Shortcodes as on GitHub: :rocket: :white_check_mark: :warning: :tada: (but `:smile:` in code stays as typed).
+
 ## Code
 
 ```swift

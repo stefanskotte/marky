@@ -14,6 +14,7 @@
 		192F4E3D4EC9B97CE7BAC149 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EBCB78AF36532529DF07F0 /* Settings.swift */; };
 		1EC0A4C12283D09F4D66222F /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1102CAF34805650F57E91A0 /* Updater.swift */; };
 		2102D52D892559B75DB2EE1A /* markdown.css in Resources */ = {isa = PBXBuildFile; fileRef = 3CD109F77DC48CB7D9F8020B /* markdown.css */; };
+		21C1573E75667B41A1E73FF6 /* github.css in Resources */ = {isa = PBXBuildFile; fileRef = C5546287DBE644AC6544C6F3 /* github.css */; };
 		2651C2819320D1326CB43065 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2E429D221244F15C7C00963F /* highlight.min.js */; };
 		36BE32FA3BEA0E24F81F9FAB /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B38D6D99DA1A1117998E4A /* Shortcuts.swift */; };
 		39BB5F5F947D85D603EE4C1E /* FolderTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44192DD694582DF15775C5A /* FolderTree.swift */; };
@@ -33,12 +34,15 @@
 		A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */; };
 		AA39D5BB3AC4B10740BF773A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = DD5B9618CF3EB564DA4EDF61 /* Sparkle */; };
 		AD7FE3D1D40DF94C7A344AAB /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
+		AFF776FB7499D573D1629DBA /* markdown-it-emoji.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 47758045BC76C850E9594D06 /* markdown-it-emoji.min.js */; };
 		B2882E017071BF08802FC95A /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B5D5E32DEC7C1C9985325C6F /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */; };
+		CD78E1C91C4B4B6CC7E700B3 /* markdown-it-emoji.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 47758045BC76C850E9594D06 /* markdown-it-emoji.min.js */; };
 		D4D4B94D43D65E444E7945FE /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF7F661B476EBBFB81273CB /* SharedSettings.swift */; };
 		DB5DCFE671D75DD0DF3D6163 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF7F661B476EBBFB81273CB /* SharedSettings.swift */; };
 		E5CF879F81F4F1C274DBE383 /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2E429D221244F15C7C00963F /* highlight.min.js */; };
 		F54E11ED2F21BACF106F3094 /* markdown-it-footnote.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */; };
+		FA2B0AB836E9E8498175D038 /* github.css in Resources */ = {isa = PBXBuildFile; fileRef = C5546287DBE644AC6544C6F3 /* github.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,7 @@
 		34EBCB78AF36532529DF07F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		3CD109F77DC48CB7D9F8020B /* markdown.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = markdown.css; sourceTree = "<group>"; };
 		4071FA9D42450736B8332D84 /* render.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = render.js; sourceTree = "<group>"; };
+		47758045BC76C850E9594D06 /* markdown-it-emoji.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it-emoji.min.js"; sourceTree = "<group>"; };
 		47BBC8C9DBE3AE29E04ABFE0 /* MarkdownRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownRenderer.swift; sourceTree = "<group>"; };
 		52E94E13B25163ACABCC2062 /* MarkdownWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownWebView.swift; sourceTree = "<group>"; };
 		5FF7F661B476EBBFB81273CB /* SharedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSettings.swift; sourceTree = "<group>"; };
@@ -90,6 +95,7 @@
 		A7F9F94557743576DCDDEA63 /* QuickLook-Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "QuickLook-Release.entitlements"; sourceTree = "<group>"; };
 		B8F84F44BE0FCC0E4BAAEB76 /* Marky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1102CAF34805650F57E91A0 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
+		C5546287DBE644AC6544C6F3 /* github.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = github.css; sourceTree = "<group>"; };
 		D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "markdown-it.min.js"; sourceTree = "<group>"; };
 		DB11ABC178C41A1C42CAC182 /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		E4325992E10503892A87DDFD /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
@@ -174,7 +180,9 @@
 		C26A15EB2E6E296DABB09D4B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5546287DBE644AC6544C6F3 /* github.css */,
 				2E429D221244F15C7C00963F /* highlight.min.js */,
+				47758045BC76C850E9594D06 /* markdown-it-emoji.min.js */,
 				7212ED8840EC1C5176DF29B1 /* markdown-it-footnote.min.js */,
 				D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */,
 				3CD109F77DC48CB7D9F8020B /* markdown.css */,
@@ -285,7 +293,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				98E39866F2E12449CB0B2887 /* THIRD-PARTY-LICENSES.txt in Resources */,
+				21C1573E75667B41A1E73FF6 /* github.css in Resources */,
 				E5CF879F81F4F1C274DBE383 /* highlight.min.js in Resources */,
+				CD78E1C91C4B4B6CC7E700B3 /* markdown-it-emoji.min.js in Resources */,
 				F54E11ED2F21BACF106F3094 /* markdown-it-footnote.min.js in Resources */,
 				88F99B39522F451EF0BE3909 /* markdown-it.min.js in Resources */,
 				2102D52D892559B75DB2EE1A /* markdown.css in Resources */,
@@ -300,7 +310,9 @@
 				82DC264A92767FD49689C7A1 /* Assets.xcassets in Resources */,
 				4BB61CE7F874F40FE5CD6332 /* THIRD-PARTY-LICENSES.txt in Resources */,
 				4E2F7B67A9F513D88FCAC662 /* bridge.js in Resources */,
+				FA2B0AB836E9E8498175D038 /* github.css in Resources */,
 				2651C2819320D1326CB43065 /* highlight.min.js in Resources */,
+				AFF776FB7499D573D1629DBA /* markdown-it-emoji.min.js in Resources */,
 				7CA2929575D58EC4440F8F29 /* markdown-it-footnote.min.js in Resources */,
 				B5D5E32DEC7C1C9985325C6F /* markdown-it.min.js in Resources */,
 				0001437A1CA1ED7EB90DB144 /* markdown.css in Resources */,

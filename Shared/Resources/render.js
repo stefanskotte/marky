@@ -144,6 +144,8 @@
       },
     });
     if (g.markdownitFootnote) md.use(g.markdownitFootnote);
+    // :smile: shortcodes as on GitHub; no :) style shortcuts (GitHub leaves those alone).
+    if (g.markdownitEmoji) md.use(g.markdownitEmoji, { shortcuts: {} });
     md.use(taskListPlugin).use(alertsPlugin).use(anchorsPlugin);
 
     // Tables scroll horizontally instead of blowing out the layout.
