@@ -9,7 +9,9 @@ enum SettingsKey {
     static let highlightCode = "highlightCode"
     static let smartTypography = "smartTypography"
     static let autoReload = "autoReload"
-    static let showOutline = "showOutline"
+    static let openInTabs = "openInTabs"
+    static let sidebarMode = "sidebarMode"
+    static let sidebarVisible = "sidebarVisible"
     static let zoom = "zoom"
 }
 
@@ -58,7 +60,7 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.highlightCode) private var highlightCode = true
     @AppStorage(SettingsKey.smartTypography) private var smartTypography = true
     @AppStorage(SettingsKey.autoReload) private var autoReload = true
-    @AppStorage(SettingsKey.showOutline) private var showOutline = false
+    @AppStorage(SettingsKey.openInTabs) private var openInTabs = true
 
     var body: some View {
         Form {
@@ -92,7 +94,7 @@ struct SettingsView: View {
 
             Section("Behaviour") {
                 Toggle("Reload automatically when the file changes", isOn: $autoReload)
-                Toggle("Show outline sidebar in new windows", isOn: $showOutline)
+                Toggle("Open files as tabs in the front window", isOn: $openInTabs)
             }
 
             Section {

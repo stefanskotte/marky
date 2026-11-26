@@ -3,13 +3,30 @@ import SwiftUI
 import UniformTypeIdentifiers
 import WebKit
 
-/// Per-window state: the Markdown source, its rendering, the web view and find.
+enum SidebarMode: String { case files, outline }
+
+/// One tab: a viewer that shows one Markdown file at a time and can move
+/// between files (with back/forward history), plus its sidebar and find state.
 @MainActor
 final class DocumentModel: ObservableObject {
-    let fileURL: URL?
+    @Published private(set) var fileURL: URL
     @Published private(set) var headings: [MarkdownRenderer.Heading] = []
     @Published private(set) var title: String?
 
+    // Sidebar
+    @Published var sidebarMode: SidebarMode { didSet { saveSidebarState() } }
+    @Published var columnVisibility: NavigationSplitViewVisibility { didSet { saveSidebarState() } }
+    @Published private(set) var rootURL: URL
+    @Published private(set) var tree: [FileNode] = []
+    @Published var expanded: Set<URL> = []
+
+    // History
+    @Published private(set) var canGoBack = false
+    @Published private(set) var canGoForward = false
+    private var backStack: [URL] = [] { didSet { canGoBack = !backStack.isEmpty } }
+    private var forwardStack: [URL] = [] { didSet { canGoForward = !forwardStack.isEmpty } }
+
+    // Find
     @Published var findVisible = false
     @Published var findQuery = ""
     @Published private(set) var findCount = 0
@@ -17,45 +34,93 @@ final class DocumentModel: ObservableObject {
     /// Bumped to ask the find field to take focus again.
     @Published private(set) var findFocusRequest = 0
 
-    weak var webView: WKWebView?
-
-    private var text: String
-    private var html = ""
+    private(set) weak var webView: WKWebView?
+    private(set) var isLoadingPage = false
     private var pageLoaded = false
+    private var hasFocusedOnce = false
+
+    private var text = ""
+    private var html = ""
     private var watcher: FileWatcher?
-    private var defaultsObserver: NSObjectProtocol?
+    private var observers: [NSObjectProtocol] = []
     private var lastStyle = UserDefaults.standard.pageStyle
     private var lastOptions = UserDefaults.standard.renderOptions
+    private var scanGeneration = 0
 
     private static let renderer = MarkdownRenderer()
 
-    init(text: String, fileURL: URL?) {
-        self.text = text
-        self.fileURL = fileURL
+    /// - Parameters:
+    ///   - root: folder for the Files sidebar; defaults to the file's project root.
+    ///   - inheriting: tab whose sidebar state the new tab copies.
+    init(fileURL: URL, root: URL? = nil, inheriting other: DocumentModel? = nil) {
+        let url = fileURL.standardizedFileURL
+        self.fileURL = url
+        self.rootURL = (root ?? FolderScanner.projectRoot(for: url)).standardizedFileURL
+        if let other {
+            sidebarMode = other.sidebarMode
+            columnVisibility = other.columnVisibility
+        } else {
+            let d = UserDefaults.standard
+            sidebarMode = SidebarMode(rawValue: d.string(forKey: SettingsKey.sidebarMode) ?? "") ?? .files
+            columnVisibility = d.bool(forKey: SettingsKey.sidebarVisible) ? .all : .detailOnly
+        }
+        text = Self.read(url) ?? ""
         render()
-        if let fileURL {
-            watcher = FileWatcher(url: fileURL) { [weak self] in
-                guard UserDefaults.standard.object(forKey: SettingsKey.autoReload) as? Bool ?? true else { return }
-                self?.reloadFromDisk()
-            }
-        }
-        defaultsObserver = NotificationCenter.default.addObserver(
-            forName: UserDefaults.didChangeNotification, object: nil, queue: .main
-        ) { [weak self] _ in
+        watch()
+        expandAncestors(of: url)
+        rescan()
+        NSDocumentController.shared.noteNewRecentDocumentURL(url)
+
+        let nc = NotificationCenter.default
+        observers.append(nc.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.settingsChanged() }
-        }
+        })
+        observers.append(nc.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.rescan() }
+        })
     }
 
     deinit {
-        if let defaultsObserver { NotificationCenter.default.removeObserver(defaultsObserver) }
+        observers.forEach(NotificationCenter.default.removeObserver)
     }
 
-    var displayName: String { fileURL?.lastPathComponent ?? title ?? "Untitled" }
+    var displayName: String { fileURL.lastPathComponent }
 
     /// Base URL for the page, so relative images and links resolve next to the file.
     var baseURL: URL? {
-        guard let path = fileURL?.path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else { return nil }
+        guard let path = fileURL.path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else { return nil }
         return URL(string: "\(LocalFileSchemeHandler.scheme)://\(path)")
+    }
+
+    static func read(_ url: URL) -> String? {
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return String(data: data, encoding: .utf8)
+            ?? String(data: data, encoding: .utf16)
+            ?? String(decoding: data, as: UTF8.self)
+    }
+
+    // MARK: Web view
+
+    func attach(_ webView: WKWebView) {
+        self.webView = webView
+        loadPage()
+    }
+
+    private func loadPage() {
+        guard let webView else { return }
+        pageLoaded = false
+        isLoadingPage = true
+        webView.loadHTMLString(fullPage(), baseURL: baseURL)
+    }
+
+    func pageDidLoad() {
+        isLoadingPage = false
+        pageLoaded = true
+        if !hasFocusedOnce, let webView {
+            hasFocusedOnce = true
+            webView.window?.makeFirstResponder(webView)
+        }
+        if findVisible && !findQuery.isEmpty { find(direction: 0) }
     }
 
     // MARK: Rendering
@@ -71,11 +136,6 @@ final class DocumentModel: ObservableObject {
 
     func fullPage() -> String {
         MarkdownRenderer.page(body: html, title: displayName, style: UserDefaults.standard.pageStyle)
-    }
-
-    func pageDidLoad() {
-        pageLoaded = true
-        if let webView { webView.window?.makeFirstResponder(webView) }
     }
 
     private func pushContent() {
@@ -102,14 +162,98 @@ final class DocumentModel: ObservableObject {
     }
 
     func reloadFromDisk() {
-        guard let fileURL, let data = try? Data(contentsOf: fileURL) else { return }
-        let newText = MarkdownFileDocument.decode(data)
-        guard newText != text else { return }
+        guard let newText = Self.read(fileURL), newText != text else { return }
         text = newText
         render()
     }
 
-    // MARK: Navigation
+    private func watch() {
+        watcher = FileWatcher(url: fileURL) { [weak self] in
+            guard UserDefaults.standard.object(forKey: SettingsKey.autoReload) as? Bool ?? true else { return }
+            self?.reloadFromDisk()
+        }
+    }
+
+    // MARK: Moving between files
+
+    /// Shows another file in this tab.
+    func navigate(to url: URL, recordHistory: Bool = true) {
+        let url = url.standardizedFileURL
+        guard url != fileURL else { return }
+        guard let newText = Self.read(url) else {
+            NSSound.beep()
+            return
+        }
+        if recordHistory {
+            backStack.append(fileURL)
+            forwardStack.removeAll()
+        }
+        fileURL = url
+        text = newText
+        let output = Self.renderer?.render(text, options: UserDefaults.standard.renderOptions)
+        html = output?.html ?? ""
+        headings = output?.headings ?? []
+        title = output?.title
+        watch()
+        loadPage()
+        NSDocumentController.shared.noteNewRecentDocumentURL(url)
+
+        if !url.path.hasPrefix(rootURL.path + "/") {
+            rootURL = FolderScanner.projectRoot(for: url)
+            rescan()
+        }
+        expandAncestors(of: url)
+    }
+
+    func goBack() {
+        guard let previous = backStack.popLast() else { return }
+        forwardStack.append(fileURL)
+        navigate(to: previous, recordHistory: false)
+    }
+
+    func goForward() {
+        guard let next = forwardStack.popLast() else { return }
+        backStack.append(fileURL)
+        navigate(to: next, recordHistory: false)
+    }
+
+    // MARK: Sidebar
+
+    func rescan() {
+        scanGeneration += 1
+        let generation = scanGeneration
+        let root = rootURL
+        Task.detached(priority: .userInitiated) {
+            let nodes = FolderScanner.scan(root: root)
+            await MainActor.run { [weak self] in
+                guard let self, self.scanGeneration == generation else { return }
+                if nodes != self.tree { self.tree = nodes }
+            }
+        }
+    }
+
+    private func expandAncestors(of url: URL) {
+        var dir = url.deletingLastPathComponent().standardizedFileURL
+        while dir.path.hasPrefix(rootURL.path + "/") {
+            expanded.insert(dir)
+            dir = dir.deletingLastPathComponent().standardizedFileURL
+        }
+    }
+
+    func toggleSidebar() {
+        columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
+    }
+
+    func show(_ mode: SidebarMode) {
+        sidebarMode = mode
+        if columnVisibility == .detailOnly { columnVisibility = .all }
+    }
+
+    private func saveSidebarState() {
+        let d = UserDefaults.standard
+        d.set(sidebarMode.rawValue, forKey: SettingsKey.sidebarMode)
+        d.set(columnVisibility != .detailOnly, forKey: SettingsKey.sidebarVisible)
+    }
 
     func scrollTo(headingID id: String) {
         webView?.callAsyncJavaScript("marky.scrollToId(id)", arguments: ["id": id], in: nil, in: .defaultClient)
@@ -134,9 +278,10 @@ final class DocumentModel: ObservableObject {
 
     private var currentZoom: CGFloat { webView?.pageZoom ?? Self.storedZoom }
 
+    /// Zoom is global: every open tab follows.
     private func setZoom(_ zoom: CGFloat) {
-        webView?.pageZoom = zoom
         UserDefaults.standard.set(Double(zoom), forKey: SettingsKey.zoom)
+        for model in WindowManager.shared.allModels { model.webView?.pageZoom = zoom }
     }
 
     // MARK: Find
@@ -198,8 +343,8 @@ final class DocumentModel: ObservableObject {
     func exportHTML() {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.html]
-        panel.nameFieldStringValue = ((fileURL?.deletingPathExtension().lastPathComponent) ?? displayName) + ".html"
-        if let dir = fileURL?.deletingLastPathComponent() { panel.directoryURL = dir }
+        panel.nameFieldStringValue = fileURL.deletingPathExtension().lastPathComponent + ".html"
+        panel.directoryURL = fileURL.deletingLastPathComponent()
         let page = fullPage()
         let handler: (NSApplication.ModalResponse) -> Void = { response in
             guard response == .OK, let url = panel.url else { return }
@@ -209,47 +354,39 @@ final class DocumentModel: ObservableObject {
         else { handler(panel.runModal()) }
     }
 
-    func revealInFinder() {
-        guard let fileURL else { return }
-        NSWorkspace.shared.activateFileViewerSelecting([fileURL])
+    func revealInFinder(_ url: URL? = nil) {
+        NSWorkspace.shared.activateFileViewerSelecting([url ?? fileURL])
     }
 
     func openInEditor() {
-        guard let fileURL else { return }
         let editor = NSWorkspace.shared.urlForApplication(toOpen: .plainText)
             ?? URL(fileURLWithPath: "/System/Applications/TextEdit.app")
         NSWorkspace.shared.open([fileURL], withApplicationAt: editor, configuration: NSWorkspace.OpenConfiguration())
     }
 
     func copyPath() {
-        guard let fileURL else { return }
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(fileURL.path, forType: .string)
     }
 
     // MARK: Links
 
-    /// Opens a link clicked in the page: Markdown files in Marky, everything else
-    /// with its default app or browser.
-    func open(link url: URL) {
-        if url.scheme == LocalFileSchemeHandler.scheme {
-            let file = URL(fileURLWithPath: url.path)
-            if file.path == fileURL?.path { scrollToTop(); return }
-            if Self.isMarkdown(file) {
-                NSDocumentController.shared.openDocument(withContentsOf: file, display: true) { _, _, error in
-                    if let error { NSAlert(error: error).runModal() }
-                }
-            } else if FileManager.default.fileExists(atPath: file.path) {
-                NSWorkspace.shared.open(file)
-            } else {
-                NSSound.beep()
-            }
-        } else {
+    /// Opens a link clicked in the page: Markdown files in this tab (or a new
+    /// tab with ⌘), everything else with its default app or the browser.
+    func open(link url: URL, inNewTab: Bool) {
+        guard url.scheme == LocalFileSchemeHandler.scheme else {
             NSWorkspace.shared.open(url)
+            return
         }
-    }
-
-    static func isMarkdown(_ url: URL) -> Bool {
-        ["md", "markdown", "mdown", "mkd", "mkdn", "mdwn", "mdtxt", "mdtext"].contains(url.pathExtension.lowercased())
+        let file = URL(fileURLWithPath: url.path).standardizedFileURL
+        if file == fileURL { scrollToTop(); return }
+        if FolderScanner.isMarkdown(file), FileManager.default.fileExists(atPath: file.path) {
+            if inNewTab { WindowManager.shared.open(file, nextTo: webView?.window) }
+            else { navigate(to: file) }
+        } else if FileManager.default.fileExists(atPath: file.path) {
+            NSWorkspace.shared.open(file)
+        } else {
+            NSSound.beep()
+        }
     }
 }

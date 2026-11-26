@@ -68,8 +68,7 @@ struct MarkdownWebView: NSViewRepresentable {
         webView.pageZoom = DocumentModel.storedZoom
         webView.onZoomIn = { [weak model] in model?.zoomIn() }
 
-        model.webView = webView
-        webView.loadHTMLString(model.fullPage(), baseURL: model.baseURL)
+        model.attach(webView)
         return webView
     }
 
@@ -77,14 +76,12 @@ struct MarkdownWebView: NSViewRepresentable {
 
     final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         let model: DocumentModel
-        private var initialLoadDone = false
 
         init(model: DocumentModel) { self.model = model }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            if !initialLoadDone {
-                initialLoadDone = true
-                MainActor.assumeIsolated { model.pageDidLoad() }
+            MainActor.assumeIsolated {
+                if model.isLoadingPage { model.pageDidLoad() }
             }
         }
 
@@ -92,8 +89,8 @@ struct MarkdownWebView: NSViewRepresentable {
                      decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
             guard let url = action.request.url else { return decisionHandler(.cancel) }
 
-            // The initial loadHTMLString.
-            if !initialLoadDone && action.navigationType == .other {
+            // Our own loadHTMLString.
+            if action.navigationType == .other && MainActor.assumeIsolated({ model.isLoadingPage }) {
                 return decisionHandler(.allow)
             }
             // "Reload" from the context menu would fetch the raw file; re-render instead.
@@ -104,12 +101,13 @@ struct MarkdownWebView: NSViewRepresentable {
             }
             // In-page anchors (#heading, footnotes).
             if url.fragment != nil, url.scheme == LocalFileSchemeHandler.scheme,
-               url.path == model.fileURL?.path || url.path == webView.url?.path {
+               url.path == MainActor.assumeIsolated({ model.fileURL.path }) {
                 return decisionHandler(.allow)
             }
             decisionHandler(.cancel)
             if action.navigationType == .linkActivated || action.targetFrame == nil {
-                MainActor.assumeIsolated { model.open(link: url) }
+                let newTab = action.modifierFlags.contains(.command) || action.targetFrame == nil
+                MainActor.assumeIsolated { model.open(link: url, inNewTab: newTab) }
             }
         }
 
@@ -117,7 +115,7 @@ struct MarkdownWebView: NSViewRepresentable {
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration,
                      for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
             if let url = action.request.url {
-                MainActor.assumeIsolated { model.open(link: url) }
+                MainActor.assumeIsolated { model.open(link: url, inNewTab: true) }
             }
             return nil
         }

@@ -1,19 +1,12 @@
 import SwiftUI
 
 struct DocumentView: View {
-    @StateObject private var model: DocumentModel
-    @State private var columnVisibility: NavigationSplitViewVisibility
-
-    init(text: String, fileURL: URL?) {
-        _model = StateObject(wrappedValue: DocumentModel(text: text, fileURL: fileURL))
-        let showOutline = UserDefaults.standard.object(forKey: SettingsKey.showOutline) as? Bool ?? false
-        _columnVisibility = State(initialValue: showOutline ? .all : .detailOnly)
-    }
+    @ObservedObject var model: DocumentModel
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            OutlineView(model: model)
-                .navigationSplitViewColumnWidth(min: 170, ideal: 230, max: 360)
+        NavigationSplitView(columnVisibility: $model.columnVisibility) {
+            Sidebar(model: model)
+                .navigationSplitViewColumnWidth(min: 180, ideal: 240, max: 400)
         } detail: {
             MarkdownWebView(model: model)
                 .overlay(alignment: .topTrailing) {
@@ -27,11 +20,91 @@ struct DocumentView: View {
                 .ignoresSafeArea(.container, edges: .bottom)
         }
         .navigationTitle(model.displayName)
-        .navigationSubtitle(model.title.flatMap { $0 == model.displayName ? nil : $0 } ?? "")
-        .focusedSceneObject(model)
+        .navigationSubtitle(model.fileURL.deletingLastPathComponent().lastPathComponent)
+        .navigationDocument(model.fileURL)
         .frame(minWidth: 420, minHeight: 300)
     }
 }
+
+private struct Sidebar: View {
+    @ObservedObject var model: DocumentModel
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Picker("Sidebar", selection: $model.sidebarMode) {
+                Text("Files").tag(SidebarMode.files)
+                Text("Outline").tag(SidebarMode.outline)
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+
+            switch model.sidebarMode {
+            case .files: FilesView(model: model)
+            case .outline: OutlineView(model: model)
+            }
+        }
+    }
+}
+
+// MARK: - Files
+
+private struct FilesView: View {
+    @ObservedObject var model: DocumentModel
+
+    var body: some View {
+        // Selecting a row (click or arrow keys) shows that file in this tab.
+        let selection = Binding<URL?>(
+            get: { model.fileURL },
+            set: { url in if let url { model.navigate(to: url) } })
+
+        List(selection: selection) {
+            Section(model.rootURL.lastPathComponent) {
+                ForEach(model.tree) { FileRow(node: $0, model: model) }
+            }
+        }
+        .listStyle(.sidebar)
+        .overlay {
+            if model.tree.isEmpty {
+                Text("No Markdown files").foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+private struct FileRow: View {
+    let node: FileNode
+    @ObservedObject var model: DocumentModel
+
+    var body: some View {
+        if let children = node.children {
+            DisclosureGroup(isExpanded: Binding(
+                get: { model.expanded.contains(node.url) },
+                set: { open in
+                    if open { model.expanded.insert(node.url) } else { model.expanded.remove(node.url) }
+                })
+            ) {
+                ForEach(children) { FileRow(node: $0, model: model) }
+            } label: {
+                Label(node.name, systemImage: "folder")
+            }
+        } else {
+            Label(node.name, systemImage: "doc.text")
+                .lineLimit(1)
+                .help(node.url.path)
+                .tag(node.url)
+                .contextMenu {
+                    Button("Open in New Tab") { WindowManager.shared.open(node.url, nextTo: model.webView?.window) }
+                    Button("Open in New Window") { WindowManager.shared.open(node.url, newWindow: true) }
+                    Divider()
+                    Button("Reveal in Finder") { model.revealInFinder(node.url) }
+                }
+        }
+    }
+}
+
+// MARK: - Outline
 
 private struct OutlineView: View {
     @ObservedObject var model: DocumentModel
@@ -62,6 +135,8 @@ private struct OutlineView: View {
         }
     }
 }
+
+// MARK: - Find
 
 private struct FindBar: View {
     @ObservedObject var model: DocumentModel

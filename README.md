@@ -15,7 +15,12 @@ own, so a `<script>` in a Markdown file does nothing.
 - **Quick Look**: press Space on a `.md` file in Finder
 - Reloads automatically when the file changes on disk, keeping your scroll position (works with editors
   that save by replacing the file)
-- Outline sidebar built from the headings (⌃⌘S)
+- **Tabs and folders**: a sidebar with **Files** (the project's Markdown files: the git repository, or
+  the file's folder) and **Outline** (the headings). Clicking a file or a link shows it in the same tab;
+  ⌘-click a link, or right-click a file, to open it in a new tab. Native macOS tabs: ⌘T new tab, ⌘W close,
+  ⇧⌘[ / ⇧⌘] previous/next tab, ⌘1–⌘9 jump to a tab, ⌘[ / ⌘] back/forward. ⌘O also opens a folder (it
+  shows the folder's README). Open tabs are restored at the next launch.
+- Sidebar ⌃⌘S, Files ⌃⌘1, Outline ⌃⌘2
 - Find with every match highlighted and a match count (⌘F, ⌘G, ⇧⌘G, ⌘E, Esc)
 - Zoom (⌘+ / ⌘= / ⌘- / ⌘0), remembered between launches
 - Links: web links open in your browser, links to other `.md` files open in Marky, `#anchors` scroll the page
@@ -23,7 +28,7 @@ own, so a `<script>` in a Markdown file does nothing.
 - Print / Save as PDF (⌘P), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
   Copy File Path (⌥⌘C), Reload (⌘R)
 - Settings (⌘,): appearance (Auto / Light / Dark), font (System / Serif / Rounded / Monospaced), font size,
-  line width, syntax highlighting, smart quotes, auto-reload, show outline in new windows
+  line width, syntax highlighting, smart quotes, auto-reload, open files as tabs
 
 ## Build
 
@@ -47,7 +52,7 @@ Change All…
 | Path | What |
 |------|------|
 | `Shared/` | Renderer (`MarkdownRenderer.swift`), JS libraries, `render.js`, `markdown.css`. Built into both targets |
-| `Marky/` | The app: SwiftUI `DocumentGroup` viewer, WKWebView, find/zoom bridge (`Resources/bridge.js`), settings |
+| `Marky/` | The app: AppKit tab windows (`WindowManager`) hosting SwiftUI views, WKWebView, folder scanner, find/zoom bridge (`Resources/bridge.js`), settings |
 | `QuickLook/` | Data-based Quick Look preview extension (sandboxed) |
 | `scripts/make-icon.swift` | Recreates the app icon |
 | `project.yml` | XcodeGen spec (the `.xcodeproj` is generated) |
@@ -56,7 +61,7 @@ Change All…
 
 - Quick Look uses the default style and follows the system appearance. It does not read the app's settings,
   because sharing them needs an App Group, which needs a signed team ID (see the backlog).
-- Quick Look only shows images the sandbox lets it read. Remote images may not load there.
+- Quick Look only shows images the sandbox lets it read (see the backlog). Remote images may not load there.
 - The app isn't sandboxed, so it can read images and linked files next to the document.
 
 ## Backlog
@@ -67,7 +72,8 @@ Change All…
 - [ ] **Themes and formats:** see which popular themes we can support (GitHub, GitLab, Obsidian, Typora,
   Bear and similar "hub" styles, maybe user CSS), and extra formats/extensions (Mermaid diagrams,
   KaTeX math, wiki-links, emoji shortcodes).
-- [ ] **Folder navigation and tabs:** projects often have several `.md` files in one folder. Add an easy way
-  to browse the folder and switch between files, e.g. simple tabs, with ⌘T for a new tab and ⌘W to close.
-  (Native window tabs already work through Window → Merge All Windows, but there's no ⌘T and no folder
-  browser yet.)
+- [x] **Folder navigation and tabs:** Files sidebar + native tabs (⌘T / ⌘W), done 2026-11-26.
+- [ ] **Quick Look doesn't show relative images**, e.g. `~/Devel/a500pico-usb/hardware/README.md`
+  (`![top](out/render_angle.png)`). Likely cause: the sandboxed extension may only read the previewed file.
+  Possible fix: a read-only temporary-exception entitlement for the home folder (allowed outside the App
+  Store), then attach images as now.
