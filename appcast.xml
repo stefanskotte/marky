@@ -7,6 +7,21 @@
     <language>en</language>
     <!-- releases: newest first, added by scripts/publish-release.sh -->
     <item>
+      <title>Marky 1.2.0</title>
+      <pubDate>Thu, 26 Nov 2026 20:52:22 GMT</pubDate>
+      <sparkle:version>1.2.0</sparkle:version>
+      <sparkle:shortVersionString>1.2.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:fullReleaseNotesLink>https://github.com/stefanskotte/marky/releases/tag/v1.2.0</sparkle:fullReleaseNotesLink>
+      <description><![CDATA[<h2 dir="auto">What's new</h2>
+<ul dir="auto">
+<li><strong>GitHub style.</strong> Settings → General → Style: choose <strong>GitHub</strong> to see files exactly as github.com shows them (light and dark), or keep <strong>Marky</strong>. Quick Look follows the choice.</li>
+<li><strong>Emoji shortcodes</strong> like <code class="notranslate">:rocket:</code> and <code class="notranslate">:white_check_mark:</code> now show as emoji, as on GitHub.</li>
+</ul>]]></description>
+      <enclosure url="https://github.com/stefanskotte/marky/releases/download/v1.2.0/Marky-1.2.0.dmg" length="2746252" type="application/x-apple-diskimage"
+                 sparkle:edSignature="kTnnzC/e9TjqfkU3/GdBLA4UjM54awAfutoe1mgGEDabYM3az2YuJ2diFP8nU8R4bsoujjRdlHUOagUdiWjiDA=="/>
+    </item>
+    <item>
       <title>Marky 1.1.0</title>
       <pubDate>Thu, 26 Nov 2026 20:30:27 GMT</pubDate>
       <sparkle:version>1.1.0</sparkle:version>
