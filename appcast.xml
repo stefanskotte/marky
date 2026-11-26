@@ -6,5 +6,22 @@
     <description>Marky updates</description>
     <language>en</language>
     <!-- releases: newest first, added by scripts/publish-release.sh -->
+    <item>
+      <title>Marky 1.1.0</title>
+      <pubDate>Thu, 26 Nov 2026 20:30:27 GMT</pubDate>
+      <sparkle:version>1.1.0</sparkle:version>
+      <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:fullReleaseNotesLink>https://github.com/stefanskotte/marky/releases/tag/v1.1.0</sparkle:fullReleaseNotesLink>
+      <description><![CDATA[<h2 dir="auto">What's new</h2>
+<ul dir="auto">
+<li><strong>Automatic updates.</strong> Marky now checks for new versions and installs them for you. Use Marky → Check for Updates…, or switch automatic checks off in Settings → General. (1.0.0 can't update itself, so install this version by hand once.)</li>
+<li><strong>Quick Look follows your settings:</strong> appearance, font, size, width and code highlighting.</li>
+<li><strong>Same-name tabs show their folder</strong>, for example <code class="notranslate">hardware › README.md</code>.</li>
+<li><strong>Arrow keys in the Files list:</strong> → opens a folder, ← closes it or goes to the parent folder.</li>
+</ul>]]></description>
+      <enclosure url="https://github.com/stefanskotte/marky/releases/download/v1.1.0/Marky-1.1.0.dmg" length="2683198" type="application/x-apple-diskimage"
+                 sparkle:edSignature="jW/Ok/VPkv54CYj7QFENJgI3fHIqpPiPvpOp48tCtmM8I9rHVLdj0xVzSEDDmf3gYoyyYaJFAcARAg0JacK0AA=="/>
+    </item>
   </channel>
 </rss>

@@ -75,7 +75,7 @@ git push -q origin main "v$VERSION"
 NAME="Marky $VERSION"
 FLAGS=()
 [ -z "$PRERELEASE" ] || FLAGS+=(--prerelease)
-gh release create "v$VERSION" "$DMG" -R "$REPO" --title "$NAME" --notes-file "$NOTES" "${FLAGS[@]}" >/dev/null
+gh release create "v$VERSION" "$DMG" -R "$REPO" --title "$NAME" --notes-file "$NOTES" ${FLAGS[@]+"${FLAGS[@]}"} >/dev/null
 
 URL="https://github.com/$REPO/releases/download/v$VERSION/Marky-$VERSION.dmg"
 PAGE="https://github.com/$REPO/releases/tag/v$VERSION"
