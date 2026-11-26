@@ -2,7 +2,7 @@
 
 A small, fast Markdown viewer for macOS, written in Swift, with a Quick Look extension.
 
-| The app: tabs, Files sidebar, images, code, tables | Quick Look (Space in Finder) |
+| The app (GitHub style, dark): tabs, Files sidebar, images, code | Quick Look (Space in Finder) |
 |---|---|
 | ![Marky showing a project's README files in three tabs](docs/screenshots/app-tabs.png) | ![Quick Look preview of the same file](docs/screenshots/quicklook.png) |
 
