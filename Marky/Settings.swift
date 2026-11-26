@@ -11,7 +11,7 @@ enum SettingsKey {
     static let autoReload = "autoReload"
     static let openInTabs = "openInTabs"
     static let sidebarMode = "sidebarMode"
-    static let sidebarVisible = "sidebarVisible"
+    static let showSidebar = "showSidebar"
     static let zoom = "zoom"
 }
 
@@ -73,6 +73,7 @@ struct GeneralSettingsView: View {
     @AppStorage(SettingsKey.smartTypography) private var smartTypography = true
     @AppStorage(SettingsKey.autoReload) private var autoReload = true
     @AppStorage(SettingsKey.openInTabs) private var openInTabs = true
+    @AppStorage(SettingsKey.showSidebar) private var showSidebar = false
 
     var body: some View {
         Form {
@@ -107,9 +108,11 @@ struct GeneralSettingsView: View {
             Section("Behaviour") {
                 Toggle("Reload automatically when the file changes", isOn: $autoReload)
                 Toggle("Open files as tabs in the front window", isOn: $openInTabs)
+                Toggle("Show the sidebar in new windows", isOn: $showSidebar)
             }
 
             Section {
+                DefaultAppRow()
                 Text("Quick Look previews follow the system appearance and use the default style. Press Space on a Markdown file in Finder to try it.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -118,5 +121,20 @@ struct GeneralSettingsView: View {
         .formStyle(.grouped)
         .frame(width: 460)
         .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct DefaultAppRow: View {
+    @State private var isDefault = DefaultApp.isDefault
+
+    var body: some View {
+        LabeledContent("Default app for Markdown files") {
+            if isDefault {
+                Label("Marky", systemImage: "checkmark.circle.fill").foregroundStyle(.secondary)
+            } else {
+                Button("Use Marky") { DefaultApp.makeDefault { _ in isDefault = DefaultApp.isDefault } }
+            }
+        }
+        .onAppear { isDefault = DefaultApp.isDefault }
     }
 }

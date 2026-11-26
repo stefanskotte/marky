@@ -28,7 +28,8 @@ own, so a `<script>` in a Markdown file does nothing.
 - Print (⌘P), Export as PDF (⌥⌘P, paginated with the print style), Export as HTML (⇧⌘E), Reveal in Finder (⇧⌘R), Open in Text Editor (⌥⌘O),
   Copy File Path (⌥⌘C), Reload (⌘R)
 - Settings (⌘,): appearance (Auto / Light / Dark), font (System / Serif / Rounded / Monospaced), font size,
-  line width, syntax highlighting, smart quotes, auto-reload, open files as tabs
+  line width, syntax highlighting, smart quotes, auto-reload, open files as tabs, show the sidebar in new
+  windows (off by default), default app for Markdown files (also asked once on first launch)
 - **Every keyboard shortcut is editable** in Settings → Shortcuts (click, press the keys; ⌫ removes,
   right-click resets one, Restore Defaults resets all). Clashes are flagged.
 
@@ -63,7 +64,8 @@ Change All…
 
 - Quick Look uses the default style and follows the system appearance. It does not read the app's settings,
   because sharing them needs an App Group, which needs a signed team ID (see the backlog).
-- Quick Look only shows images the sandbox lets it read (see the backlog). Remote images may not load there.
+- Quick Look has read-only access to the disk (a sandbox exception, allowed outside the App Store) so it
+  can show relative images. Remote images may not load there.
 - The app isn't sandboxed, so it can read images and linked files next to the document.
 
 ## Backlog
@@ -75,7 +77,4 @@ Change All…
   Bear and similar "hub" styles, maybe user CSS), and extra formats/extensions (Mermaid diagrams,
   KaTeX math, wiki-links, emoji shortcodes).
 - [x] **Folder navigation and tabs:** Files sidebar + native tabs (⌘T / ⌘W), done 2026-11-26.
-- [ ] **Quick Look doesn't show relative images**, e.g. `~/Devel/a500pico-usb/hardware/README.md`
-  (`![top](out/render_angle.png)`). Likely cause: the sandboxed extension may only read the previewed file.
-  Possible fix: a read-only temporary-exception entitlement for the home folder (allowed outside the App
-  Store), then attach images as now.
+- [x] **Quick Look relative images**: fixed 2026-11-26 with a read-only sandbox exception.

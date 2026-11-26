@@ -105,7 +105,6 @@ final class WindowManager: ObservableObject {
             return
         }
         let model = DocumentModel(fileURL: source.fileURL, root: source.rootURL, inheriting: source)
-        if model.columnVisibility == .detailOnly { model.columnVisibility = .all }
         show(ViewerWindowController(model: model), joining: window ?? frontViewerWindow)
     }
 

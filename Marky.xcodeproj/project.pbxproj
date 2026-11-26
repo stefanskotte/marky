@@ -27,6 +27,7 @@
 		88F99B39522F451EF0BE3909 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */; };
 		8B548FA73DC22359313FC8F4 /* MarkyQuickLook.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 72583DEB1F9A4EC0EE6957F8 /* MarkyQuickLook.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8FD624D519F76EBD88003445 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F1ED4175A8BA3197DF3138 /* PreviewProvider.swift */; };
+		A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */; };
 		AD7FE3D1D40DF94C7A344AAB /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B2882E017071BF08802FC95A /* render.js in Resources */ = {isa = PBXBuildFile; fileRef = 4071FA9D42450736B8332D84 /* render.js */; };
 		B5D5E32DEC7C1C9985325C6F /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D71AEE8A608DE0BF55C9FF31 /* markdown-it.min.js */; };
@@ -82,6 +83,7 @@
 		DB11ABC178C41A1C42CAC182 /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		E4325992E10503892A87DDFD /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
 		E591CD62A0E06A43CC48EA9F /* MarkyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkyApp.swift; sourceTree = "<group>"; };
+		E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultApp.swift; sourceTree = "<group>"; };
 		F5C4E78CCC1B881DB2ED2632 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				3499DF92A84531CFF132336D /* Assets.xcassets */,
+				E8003B0A4329F3B0D07EA7EB /* DefaultApp.swift */,
 				E4325992E10503892A87DDFD /* DocumentModel.swift */,
 				13D81DE90B9AE155EA54DA16 /* DocumentView.swift */,
 				DB11ABC178C41A1C42CAC182 /* FileWatcher.swift */,
@@ -278,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6E3DB2D9930484937219101 /* DefaultApp.swift in Sources */,
 				751F6D967A06F02A131ABF5F /* DocumentModel.swift in Sources */,
 				0A663692BC0E02BBB0D32F7D /* DocumentView.swift in Sources */,
 				12872FF0E86A7CFCC636FA23 /* FileWatcher.swift in Sources */,

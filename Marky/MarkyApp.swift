@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // session (or ask for a file) on a plain launch.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             MainActor.assumeIsolated {
+                DefaultApp.askOnFirstRun()
                 let manager = WindowManager.shared
                 if !manager.hasWindows { manager.restoreSession() }
                 if !manager.hasWindows { manager.showOpenPanel() }

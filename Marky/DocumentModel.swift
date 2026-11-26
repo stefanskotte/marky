@@ -15,7 +15,7 @@ final class DocumentModel: ObservableObject {
 
     // Sidebar
     @Published var sidebarMode: SidebarMode { didSet { saveSidebarState() } }
-    @Published var columnVisibility: NavigationSplitViewVisibility { didSet { saveSidebarState() } }
+    @Published var columnVisibility: NavigationSplitViewVisibility
     @Published private(set) var rootURL: URL
     @Published private(set) var tree: [FileNode] = []
     @Published var expanded: Set<URL> = []
@@ -62,7 +62,7 @@ final class DocumentModel: ObservableObject {
         } else {
             let d = UserDefaults.standard
             sidebarMode = SidebarMode(rawValue: d.string(forKey: SettingsKey.sidebarMode) ?? "") ?? .files
-            columnVisibility = d.bool(forKey: SettingsKey.sidebarVisible) ? .all : .detailOnly
+            columnVisibility = d.bool(forKey: SettingsKey.showSidebar) ? .all : .detailOnly
         }
         text = Self.read(url) ?? ""
         render()
@@ -250,9 +250,7 @@ final class DocumentModel: ObservableObject {
     }
 
     private func saveSidebarState() {
-        let d = UserDefaults.standard
-        d.set(sidebarMode.rawValue, forKey: SettingsKey.sidebarMode)
-        d.set(columnVisibility != .detailOnly, forKey: SettingsKey.sidebarVisible)
+        UserDefaults.standard.set(sidebarMode.rawValue, forKey: SettingsKey.sidebarMode)
     }
 
     func scrollTo(headingID id: String) {
